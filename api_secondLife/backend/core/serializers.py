@@ -1,15 +1,15 @@
 from rest_framework import serializers
-from .models import Usuario
+from .models import User
 
-class UsuarioRegistroSerializer(serializers.ModelSerializer):
+class UserRegistroSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Usuario
+        model = User
         fields = ['nombre', 'correo', 'contrasena', 'ubicacion', 'foto_perfil', 'desc_perfil']
         extra_kwargs = {'contrasena': {'write_only': True}}
 
     def create(self, validated_data):
         password = validated_data.pop('contrasena')
-        usuario = Usuario(**validated_data)
-        usuario.set_contrasena(password)
-        usuario.save()
-        return usuario
+        User = User(**validated_data)
+        User.set_contrasena(password)
+        User.save()
+        return User

@@ -1,100 +1,113 @@
 from django.db import models
-from django.db import models
 from django.contrib.auth.hashers import make_password
+from django.core.validators import MinValueValidator, MaxValueValidator
 
-class Usuario(models.Model):
-    nombre = models.CharField(max_length=100)
-    correo = models.EmailField(unique=True)
-    contrasena = models.CharField(max_length=255)
-    ubicacion = models.CharField(max_length=100, null=True, blank=True)
-    foto_perfil = models.CharField(max_length=45, null=True, blank=True)
-    desc_perfil = models.TextField(max_length=500, null=True, blank=True)
+
+class User(models.Model):
+    name = models.CharField(max_length=100, help_text="Introduce el nombre completo del producto.")
+    mail = models.EmailField(unique=True, help_text="Introduce el nombre completo del producto.")
+    password = models.CharField(max_length=255, help_text="Introduce el nombre completo del producto.")
+    location = models.CharField(max_length=100, null=True, blank=True, help_text="Introduce el nombre completo del producto.")
+    profile_pic = models.CharField(max_length=45, null=True, blank=True, help_text="Introduce el nombre completo del producto.")
+    profile_desc = models.TextField(max_length=500, null=True, blank=True, help_text="Introduce el nombre completo del producto.")
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.nombre
 
-    def set_contrasena(self, raw_password):
+    def set_password(self, raw_password):
         """Método para encriptar la contraseña antes de guardarla."""
-        self.contrasena = make_password(raw_password)
+        """"Method for encrypting the password before saving it"""
+        self.password = make_password(raw_password)
         
-    def check_contrasena(self, raw_password):
+    def check_password(self, raw_password):
         """Método para verificar si la contraseña es correcta."""
+        """Method to verify if the password is correct"""
         from django.contrib.auth.hashers import check_password
-        return check_password(raw_password, self.contrasena)
+        return check_password(raw_password, self.password)
     
-class Categoria(models.Model):
-    nombre = models.CharField(max_length=45, null=True, blank=True)
+class Category(models.Model):
+    name = models.CharField(max_length=45, help_text="Introduce el nombre completo del producto.")
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
 
     def __str__(self):
-        return self.nombre or "Sin nombre"
+        return self.name or "Sin nombre"
 
 
-class Valoracion(models.Model):
-    valoracion = models.IntegerField(null=True, blank=True)
-    fecha = models.DateTimeField(null=True, blank=True)
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+class Rating(models.Model):
+    rating_value = models.IntegerField([MinValueValidator(0), MaxValueValidator(5)], null=True, blank=True, help_text="Introduce el nombre completo del producto.")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
 
     def __str__(self):
-        return f"Valoración {self.valoracion} para {self.usuario.nombre}"
+        return f"Valoración {self.rating} para {self.User.name}"
 
 
-class Producto(models.Model):
-    ESTADO_CHOICES = [
-        ('Como nuevo', 'Como nuevo'),
-        ('Muy bueno', 'Muy bueno'),
-        ('Bueno', 'Bueno'),
-        ('Bueno con marcas de uso', 'Bueno con marcas de uso'),
-        ('Regular', 'Regular'),
-        ('Mal', 'Mal'),
+class Product(models.Model):
+    STATE_CHOICES = [
+        ('como_nuevo', 'Como nuevo'),
+        ('muy_bueno', 'Muy bueno'),
+        ('bueno', 'Bueno'),
+        ('regular', 'Regular'),
+        ('no_funciona', 'No funciona'),
     ]
 
-    DISPONIBILIDAD_CHOICES = [
+    DISPONIBILITY_CHOICES = [
+        ('en_venta', 'En venta'),
         ('comprado', 'Comprado'),
         ('reservado', 'Reservado'),
-        ('en_venta', 'En venta'),
         ('cancelado', 'Cancelado'),
     ]
 
-    precio = models.IntegerField(null=True, blank=True)
-    nombre = models.CharField(max_length=45, null=True, blank=True)
-    fecha_pub = models.DateTimeField(null=True, blank=True)
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    categoria = models.ForeignKey(Categoria, on_delete=models.RESTRICT)
-    valoracion = models.ForeignKey(Valoracion, on_delete=models.CASCADE)
-    descripcion = models.CharField(max_length=200, null=True, blank=True)
-    disponibilidad = models.CharField(
-        max_length=20, choices=DISPONIBILIDAD_CHOICES, null=True, blank=True
+    price = models.IntegerField(help_text="Introduce el precio del producto.")
+    name = models.CharField(max_length=45, null=True, blank=True, help_text="Introduce el nombre del producto.")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, help_text="Introduce el nombre del producto.")
+    category = models.ForeignKey(Category, on_delete=models.RESTRICT, help_text="Introduce la categoría del producto.")
+    description = models.CharField(max_length=200, null=True, blank=True, help_text="Introduce la descripción del producto.")
+    disponibility = models.CharField(
+        max_length=20, choices=DISPONIBILITY_CHOICES, default=DISPONIBILITY_CHOICES[0][0], null=True, blank=True, help_text="Introduce la disponibilidad del producto."
     )
-    estado = models.CharField(
-        max_length=30, choices=ESTADO_CHOICES, null=True, blank=True
+    state = models.CharField(
+        max_length=30, choices=STATE_CHOICES, default=STATE_CHOICES[2][0], null=True, blank=True, help_text="Introduce el estado del producto."
     )
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
 
     def __str__(self):
-        return self.nombre or "Producto sin nombre"
+        return self.name or "Producto sin nombre"
 
 
-class Foto(models.Model):
-    url = models.CharField(max_length=255, null=True, blank=True)
-    fecha_subida = models.DateTimeField(null=True, blank=True)
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+
+class Photo(models.Model):
+    picture = models.ImageField(upload_to='product_pictures/', null=True, blank=True)
+    Product = models.ForeignKey(Product, on_delete=models.CASCADE, help_text="Introduce el nombre completo del producto.")
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.url or f"Foto {self.id}"
 
 
-class Compra(models.Model):
-    fechaCompra = models.DateTimeField()
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+class Order(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, help_text="Introduce el nombre completo del producto.")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, help_text="Introduce el nombre completo del producto.")
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
 
     def __str__(self):
-        return f"Compra de {self.producto.nombre} por {self.usuario.nombre}"
+        return f"Compra de {self.product.name} por {self.user.name}"
 
 
-class Ofertas(models.Model):
-    precio_ofertado = models.CharField(max_length=45, null=True, blank=True)
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+class Offer(models.Model):
+    offered_price = models.CharField(max_length=45, null=True, blank=True, help_text="Introduce el precio ofrecido para el producto.")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='offers')  # Relación con Product
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='offers')  # Relación con User
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
 
     def __str__(self):
-        return f"Oferta de {self.precio_ofertado} por {self.usuario.nombre}"
+        return f"Oferta de {self.offered_price} por {self.user.name} para {self.product.name}"
+

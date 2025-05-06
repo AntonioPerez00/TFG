@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import Usuario, Categoria, Valoracion, Producto, Foto, Compra, Ofertas
+from .models import User, Category, Rating, Product, Photo, Order, Offer
 
-admin.site.register(Usuario)
-admin.site.register(Categoria)
-admin.site.register(Valoracion)
-admin.site.register(Producto)
-admin.site.register(Foto)
-admin.site.register(Compra)
-admin.site.register(Ofertas)
+admin.site.register(User)
+admin.site.register(Category)
+admin.site.register(Rating)
+admin.site.register(Product)
+admin.site.register(Photo)
+admin.site.register(Order)
+admin.site.register(Offer)
