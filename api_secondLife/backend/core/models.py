@@ -14,7 +14,7 @@ class User(models.Model):
     updated_at = models.DateField(auto_now=True)
 
     def __str__(self):
-        return self.nombre
+        return self.name
 
     def set_password(self, raw_password):
         """Método para encriptar la contraseña antes de guardarla."""
