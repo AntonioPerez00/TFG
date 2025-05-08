@@ -20,7 +20,11 @@ def login_user(request):
     mail = request.data.get('mail')
     password = request.data.get('password')
 
+    if not mail or not password:
+        return Response({'error': 'Faltan credenciales'}, status=status.HTTP_400_BAD_REQUEST)
+
     user = authenticate(request, mail=mail, password=password)
+
     if user:
         refresh = RefreshToken.for_user(user)
         return Response({
@@ -28,6 +32,7 @@ def login_user(request):
             'access': str(refresh.access_token),
         })
     return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 @api_view(['POST'])
 def logout_user(request):
