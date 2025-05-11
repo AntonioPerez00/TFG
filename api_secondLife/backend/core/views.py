@@ -23,10 +23,11 @@ def login_user(request):
     if not mail or not password:
         return Response({'error': 'Faltan credenciales'}, status=status.HTTP_400_BAD_REQUEST)
 
-    user = authenticate(request, mail=mail, password=password)
+    user = authenticate(request, mail=mail, password=password) #Busca un usuario con estos datos
 
+    #Si el usuario es válido creo los tokens
     if user:
-        refresh = RefreshToken.for_user(user)
+        refresh = RefreshToken.for_user(user) 
         return Response({
             'refresh': str(refresh),
             'access': str(refresh.access_token),
