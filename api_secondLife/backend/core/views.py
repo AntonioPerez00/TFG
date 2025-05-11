@@ -6,6 +6,10 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from .serializers import UserRegistroSerializer
 from .models import User
+from rest_framework import viewsets
+from .models import Product
+from .serializers import ProductSerializer
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 @api_view(['POST'])
 def register_user(request):
@@ -44,3 +48,8 @@ def logout_user(request):
         return Response({"mensaje": "Sesión cerrada correctamente."}, status=status.HTTP_205_RESET_CONTENT)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
