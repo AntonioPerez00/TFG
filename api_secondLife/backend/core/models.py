@@ -8,7 +8,7 @@ class User(models.Model):
     mail = models.EmailField(unique=True, help_text="Introduce el nombre completo del producto.")
     password = models.CharField(max_length=255, help_text="Introduce el nombre completo del producto.")
     location = models.CharField(max_length=100, null=True, blank=True, help_text="Introduce el nombre completo del producto.")
-    profile_pic = models.CharField(max_length=45, null=True, blank=True, help_text="Introduce el nombre completo del producto.")
+    profile_pic = models.ImageField(upload_to='users/', null=True, blank=True)
     profile_desc = models.TextField(max_length=500, null=True, blank=True, help_text="Introduce el nombre completo del producto.")
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
@@ -79,17 +79,6 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name or "Producto sin nombre"
-
-
-
-class Photo(models.Model):
-    picture = models.ImageField(upload_to='product_pictures/', null=True, blank=True)
-    Product = models.ForeignKey(Product, on_delete=models.CASCADE, help_text="Introduce el nombre completo del producto.")
-    created_at = models.DateField(auto_now_add=True)
-    updated_at = models.DateField(auto_now=True)
-
-    def __str__(self):
-        return self.url or f"Foto {self.id}"
 
 
 class Order(models.Model):
