@@ -37,6 +37,31 @@ Para registrar un nuevo usuario, realiza una petición `POST` a la siguiente URL
   "profile_desc": "Me gusta comprar y vender cosas de segunda mano"
 }
 ```
+
+
+### Productos
+#### Crear producto
+- `POST /api/products/`
+- Para crear el producto también necesitarás el token que se crea con el login del usuario.
+
+```json
+{
+  "name": "Camiseta verde",
+  "price": "20",
+  "user": "1",
+  "category": "2",
+  "description": null
+}
+```
+#### Listar productos
+- `GET /api/products/`
+- Este no requiere token de autenticación.
+
+#### Detalles de producto
+- `GET /api/products/<id>/`
+
+#### Detalles de producto
+- `PUT /api/products/<id>/`
 ### Notas
 
 #### Migraciones:
