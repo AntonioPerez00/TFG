@@ -1,6 +1,40 @@
 # TFG - 2º DAM
 
 ## Antonio Pérez Cuéllar
+Este proyecto es una plataforma de compraventa de productos de segunda mano, similar a Wallapop. Incluye autenticación de usuarios, gestión de productos con imágenes, y control de permisos para proteger los datos de cada usuario.
+
+### Clonar el repositorio
+
+```bash
+git clone https://github.com/AntonioPerez00/TFG
+cd tu-repo
+```
+
+### Autenticación
+
+Para iniciar sesión y obtener los tokens necesarios para acceder a rutas protegidas:
+
+- `POST /api/login/`
+
+```json
+{
+  "mail": "antonio@example.com",
+  "password": "1234"
+}
+```
+La respuesta será algo así
+```json
+{
+  "refresh": "xxx",
+  "access": "yyy"
+}
+```
+Un token de acceso que dura un día y uno de refresco que dura 90.
+
+El token de acceso se suará en el header de las peticiones protegidas, como en el caso de crear un producto.
+```json
+Authorization: Bearer <access_token>
+```
 
 ### Comandos básicos
 
@@ -48,7 +82,6 @@ Para registrar un nuevo usuario, realiza una petición `POST` a la siguiente URL
 {
   "name": "Camiseta verde",
   "price": "20",
-  "user": "1",
   "category": "2",
   "description": null
 }
@@ -60,8 +93,17 @@ Para registrar un nuevo usuario, realiza una petición `POST` a la siguiente URL
 #### Detalles de producto
 - `GET /api/products/<id>/`
 
-#### Detalles de producto
+#### Editar producto (PUT toca todos los cambios)
 - `PUT /api/products/<id>/`
+#### Editar producto (PATCH toca solo el campo que necesitas)
+- `PATCH /api/products/<id>/`
+#### Editar de producto
+- `DELETE /api/products/<id>/`
+
+#### Restricciones
+- Solo los usuarios logeados podrán crear productos, esto se controla mediante el access token.
+- Solo los usuarios propietarios del producto podrán editarlo o eliminarlo. (permissions.py)
+
 ### Notas
 
 #### Migraciones:

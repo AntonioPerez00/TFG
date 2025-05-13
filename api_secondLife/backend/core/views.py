@@ -10,6 +10,7 @@ from rest_framework import viewsets
 from .models import Product
 from .serializers import ProductSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from .permissions import IsOwnerOrReadOnly
 
 # Se hacen de forma diferente al tener que utilizar campos diferentes a los de los usuarios de django
 @api_view(['POST'])
@@ -53,7 +54,7 @@ def logout_user(request):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
