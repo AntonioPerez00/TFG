@@ -101,8 +101,46 @@ Para registrar un nuevo usuario, realiza una petición `POST` a la siguiente URL
 - `DELETE /api/products/<id>/`
 
 #### Restricciones
-- Solo los usuarios logeados podrán crear productos, esto se controla mediante el access token.
+- Solo los usuarios logeados podrán ver y  crear productos, esto se controla mediante el access token.
 - Solo los usuarios propietarios del producto podrán editarlo o eliminarlo. (permissions.py)
+
+### Filtros de Productos
+
+#### 1. **Filtrar productos por categoría**
+- **Método**: `GET`
+- **URL**: `http://localhost:8000/api/products/?category=2`
+- **Descripción**: Filtra los productos que pertenecen a la categoría con ID `2`.
+
+#### 2. **Filtrar productos por disponibilidad**
+- **Método**: `GET`
+- **URL**: `http://localhost:8000/api/products/?disponibility=en_venta`
+- **Descripción**: Filtra los productos que están disponibles para la venta (disponibilidad "en_venta").
+
+#### 3. **Filtrar productos por estado**
+- **Método**: `GET`
+- **URL**: `http://localhost:8000/api/products/?state=bueno`
+- **Descripción**: Filtra los productos que están en buen estado.
+
+#### 4. **Filtrar productos por ubicación**
+- **Método**: `GET`
+- **URL**: `http://localhost:8000/api/products/?location=Sevilla`
+- **Descripción**: Filtra los productos que tienen la ubicación "Sevilla".
+
+#### 5. **Filtrar productos por precio mínimo y máximo**
+- **Método**: `GET`
+- **URL**: `http://localhost:8000/api/products/?min_price=10&max_price=100`
+- **Descripción**: Filtra los productos cuyo precio esté entre 10 y 100.
+
+#### 6. **Ordenar productos por precio**
+- **Método**: `GET`
+- **URL**: `http://localhost:8000/api/products/?ordering=-price`
+- **Descripción**: Ordena los productos de mayor a menor precio.
+
+#### 7. **Filtrar productos por múltiples filtros combinados**
+- **Método**: `GET`
+- **URL**: `http://localhost:8000/api/products/?category=2&state=bueno&min_price=20&max_price=100&ordering=-price`
+- **Descripción**: Filtra los productos de la categoría 2, en buen estado, cuyo precio esté entre 20 y 100, ordenados de mayor a menor precio.
+
 
 ### Notas
 
