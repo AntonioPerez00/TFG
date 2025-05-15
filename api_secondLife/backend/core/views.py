@@ -13,6 +13,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .permissions import IsOwnerOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
+from core.models import User 
 
 # Se hacen de forma diferente al tener que utilizar campos diferentes a los de los usuarios de django
 @api_view(['POST'])
@@ -58,14 +59,18 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
-    
+
     filterset_fields = {
         'category': ['exact'],
         'disponibility': ['exact'],
         'state': ['exact'],
-        'user__location': ['exact'],  # filtro por ubicación del usuario
-        'price': ['gte', 'lte'],  # precio mínimo y máximo
+        'user__location': ['exact'],
+        'price': ['gte', 'lte'],
     }
     
     ordering_fields = ['price', 'created_at']
-    search_fields = ['name', 'description']  # esto permite buscar por texto
+    search_fields = ['name', 'description']
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+

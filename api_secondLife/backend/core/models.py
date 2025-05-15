@@ -27,6 +27,9 @@ class User(models.Model):
         from django.contrib.auth.hashers import check_password
         return check_password(raw_password, self.password)
     
+    def is_authenticated(self):
+        return True
+    
 class Category(models.Model):
     name = models.CharField(max_length=45, help_text="Introduce el nombre completo del producto.")
     created_at = models.DateField(auto_now_add=True)
