@@ -4,8 +4,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class User(models.Model):
-    name = models.CharField(max_length=100, help_text="Introduce el nombre completo del producto.")
-    mail = models.EmailField(unique=True, help_text="Introduce el nombre completo del producto.")
+    name = models.CharField(max_length=100, help_text="Nombre del usuario.")
+    mail = models.EmailField(unique=True, help_text="Correo electrónico del usuario")
     password = models.CharField(max_length=255, help_text="Introduce el nombre completo del producto.")
     location = models.CharField(max_length=100, null=True, blank=True, help_text="Introduce el nombre completo del producto.")
     profile_pic = models.ImageField(upload_to='users/', null=True, blank=True)
@@ -19,7 +19,7 @@ class User(models.Model):
     def set_password(self, raw_password):
         """Método para encriptar la contraseña antes de guardarla."""
         """"Method for encrypting the password before saving it"""
-        self.password = make_password(raw_password)
+        self.password = make_password(raw_password) 
         
     def check_password(self, raw_password):
         """Método para verificar si la contraseña es correcta."""
@@ -60,7 +60,7 @@ class Product(models.Model):
 
     DISPONIBILITY_CHOICES = [
         ('en_venta', 'En venta'),
-        ('comprado', 'Comprado'),
+        ('vendido', 'Vendido'),
         ('reservado', 'Reservado'),
         ('cancelado', 'Cancelado'),
     ]

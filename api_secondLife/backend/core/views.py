@@ -55,7 +55,6 @@ def logout_user(request):
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
@@ -70,6 +69,16 @@ class ProductViewSet(viewsets.ModelViewSet):
     
     ordering_fields = ['price', 'created_at']
     search_fields = ['name', 'description']
+    
+    def get_queryset(self):
+        queryset = Product.objects.all()
+        user = self.request.user
+        if user.is_authenticated:
+            # Excluir productos propios
+            queryset = queryset.exclude(user=user)
+        # Opcional: aquí podrías filtrar también solo productos en venta, por ejemplo:
+        queryset = queryset.filter(disponibility='en_venta')
+        return queryset
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
