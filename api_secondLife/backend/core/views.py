@@ -25,6 +25,11 @@ from django.http import HttpResponse
 from datetime import timedelta
 import random
 from django.utils import timezone
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+
 
 # Se hacen de forma diferente al tener que utilizar campos diferentes a los de los usuarios de django
 # @api_view(['POST'])
@@ -136,3 +141,18 @@ class ProductViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def mark_product_sold(request, product_id):
+    user = request.user
+    product = get_object_or_404(Product, id=product_id)
+
+    # Opcional: comprobar que el usuario no sea el dueño (si es necesario)
+    if product.user == user:
+        return Response({"error": "No puedes comprar tu propio producto"}, status=400)
+
+    # Cambiar estado a vendido
+    product.disponibility = 'vendido'
+    product.save()
+    
+    return Response({"mensaje": "Producto marcado como vendido"})
