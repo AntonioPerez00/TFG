@@ -14,15 +14,68 @@ from .permissions import IsOwnerOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from core.models import User 
+from django.core.mail import send_mail
+from django.urls import reverse
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from .tokens import email_verification_token
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth import get_user_model
+from django.http import HttpResponse
+from datetime import timedelta
+import random
+from django.utils import timezone
 
 # Se hacen de forma diferente al tener que utilizar campos diferentes a los de los usuarios de django
+# @api_view(['POST'])
+# def register_user(request):
+#     serializer = UserRegistroSerializer(data=request.data)
+#     if serializer.is_valid():
+#         serializer.save()
+#         return Response({"mensaje": "Usuario creado correctamente."}, status=status.HTTP_201_CREATED)
+#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 @api_view(['POST'])
 def register_user(request):
     serializer = UserRegistroSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
-        return Response({"mensaje": "Usuario creado correctamente."}, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        user = serializer.save()
+        user.is_active = False  # Para evitar login antes de verificar
+
+        # Generar código y expiración
+        code = f"{random.randint(0, 9999):04d}"
+        user.email_verification_code = code
+        user.email_verification_expiry = timezone.now() + timedelta(minutes=15)
+        user.save()
+
+        # Enviar correo con código
+        send_mail(
+            subject='Tu código de verificación',
+            message=f'Tu código de verificación es: {code}',
+            from_email='a.secondlifeteam@gmail.com',
+            recipient_list=[user.mail],
+            fail_silently=False,
+        )
+
+        return Response({"mensaje": "Usuario creado. Revisa tu correo para verificar tu cuenta."}, status=201)
+    
+    return Response(serializer.errors, status=400)
+
+@api_view(['POST'])
+def verify_email_code(request):
+    mail = request.data.get('mail')
+    code = request.data.get('code')
+    try:
+        user = User.objects.get(mail=mail)
+    except User.DoesNotExist:
+        return Response({"error": "Usuario no encontrado"}, status=404)
+    if user.email_verification_code == code and user.email_verification_expiry > timezone.now():
+        user.is_active = True
+        user.email_verification_code = None
+        user.email_verification_expiry = None
+        user.save()
+        return Response({"mensaje": "Correo verificado correctamente"})
+    return Response({"error": "Código inválido o expirado"}, status=400)
 
 @api_view(['POST'])
 def login_user(request):

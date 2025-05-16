@@ -12,6 +12,9 @@ class User(models.Model):
     profile_desc = models.TextField(max_length=500, null=True, blank=True, help_text="Introduce el nombre completo del producto.")
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
+    is_active = models.BooleanField(default=False)
+    email_verification_code = models.CharField(max_length=4, blank=True, null=True)
+    email_verification_expiry = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return self.name
