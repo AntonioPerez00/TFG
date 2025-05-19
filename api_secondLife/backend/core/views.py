@@ -84,22 +84,23 @@ def verify_email_code(request):
 
 @api_view(['POST'])
 def login_user(request):
+    print("Request data:", request.data)
     mail = request.data.get('mail')
     password = request.data.get('password')
 
     if not mail or not password:
+        print("Faltan mail o password")
         return Response({'error': 'Faltan credenciales'}, status=status.HTTP_400_BAD_REQUEST)
 
-    user = authenticate(request, mail=mail, password=password) #Busca un usuario con estos datos
-
-    #Si el usuario es válido creo los tokens
+    user = authenticate(request, mail=mail, password=password)
     if user:
-        refresh = RefreshToken.for_user(user) 
+        refresh = RefreshToken.for_user(user)
         return Response({
             'refresh': str(refresh),
             'access': str(refresh.access_token),
         })
     return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 
 @api_view(['POST'])

@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'django_filters',
     'core',
     'rest_framework',
+    'corsheaders',
     'djoser',
     'rest_framework_simplejwt',
 ]
@@ -71,10 +72,10 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
 
-AUTHENTICATION_BACKENDS = (
-    'core.backends.EmailBackend',  # Asegúrate de poner la ruta correcta
-    'django.contrib.auth.backends.ModelBackend',  # Si quieres mantener el backend por defecto también
-)
+AUTHENTICATION_BACKENDS = [
+    'core.authentication.EmailBackend',  # tu backend personalizado
+    'django.contrib.auth.backends.ModelBackend',  # por si acaso
+]
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
@@ -94,6 +95,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
 ]
 
 ROOT_URLCONF = 'config.urls'
