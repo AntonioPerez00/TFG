@@ -1,8 +1,9 @@
 <!-- src/views/AuthView.vue -->
 <template>
-  <div class="flex items-center justify-center min-h-screen bg-gray-100">
-    <div class="bg-white w-full max-w-md rounded-xl shadow-lg p-6 relative">
-      <div class="flex mb-4 border-b">
+  <div class="flex items-center justify-center min-h-screen mt-[-5rem]">
+  <div id="card" >
+    <div id="login-register">
+      <div>
         <button
           :class="['flex-1 text-center py-2', activeTab === 'login' ? 'border-b-2 border-teal-500 font-bold' : 'text-gray-500']"
           @click="activeTab = 'login'"
@@ -21,7 +22,72 @@
       <Register v-else @registered="switchToLogin" />
     </div>
   </div>
+  </div>
 </template>
+
+<style>
+
+.continuar{
+  background-color: #299CA9;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  margin-top: 2rem;
+}
+
+input{
+  border: none;
+  border-bottom: solid;
+  padding: 3px;
+  margin-bottom: 25px;
+  color: #9f9a8f;
+  font-size: 18px;
+}
+
+input::placeholder{
+  color: #9f9a8f;
+}
+
+input:focus {
+  outline: none;
+  box-shadow: none; /* para quitar sombras */
+  border-color: transparent; /* o el color que quieras */
+  border-bottom-color: #9f9a8f;
+}
+
+
+p{
+  color: #9f9a8f;
+}
+
+button{
+  color: #9f9a8f;
+  border: none;
+  padding: 10px 25px;
+  background-color: transparent;
+  margin-bottom: 30px;
+  font-size: 19px;
+}
+
+
+hr{
+  border-top: 1px solid #f1e2bc;
+}
+
+#card{
+  background-color: #FFFDF8;
+  border-style: solid;
+  border-radius: 20px;
+  border-color: #f1e2bc;
+  padding: 20px;
+  padding-top: 10px;
+  width: fit-content;
+}
+#login-register{
+  border: 5px;
+}
+
+</style>
 
 <script setup>
 import { ref } from 'vue'
