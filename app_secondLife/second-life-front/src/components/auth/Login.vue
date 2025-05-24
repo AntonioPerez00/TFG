@@ -52,8 +52,8 @@ form {
 <script setup>
 import { ref } from 'vue'
 import axios from 'axios'
-import eye from '../assets/ojo.png'
-import invisible from '../assets/invisible.png'
+import eye from '../../assets/ojo.png'
+import invisible from '../../assets/invisible.png'
 
 const mail = ref('')
 const password = ref('')

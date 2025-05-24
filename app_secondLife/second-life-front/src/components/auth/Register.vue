@@ -31,8 +31,8 @@
 
 <script setup>
 import { ref } from 'vue'
-import eye from '../assets/ojo.png'
-import invisible from '../assets/invisible.png'
+import eye from '../../assets/ojo.png'
+import invisible from '../../assets/invisible.png'
 
 const email = ref('')
 const username = ref('')

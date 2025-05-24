@@ -1,10 +1,13 @@
 <template>
-  <div class="p-8">
-    <h1 class="text-2xl font-bold">¡Bienvenido a la página principal!</h1>
-    <p class="mt-2 text-gray-600">Aquí verás los productos, filtros y más funcionalidades.</p>
+  <div>
+    <NavBar />
+    <div class="pt-20 px-8">
+      <div class="bg-red-500 text-white p-4">Esto debería ser rojo con texto blanco</div>
+
+    </div>
   </div>
 </template>
 
 <script setup>
-// Página vacía de momento
+import NavBar from '../components/NavBar.vue'
 </script>

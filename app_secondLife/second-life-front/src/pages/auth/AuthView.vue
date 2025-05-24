@@ -92,8 +92,8 @@ hr{
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import Login from '../../components/Login.vue'
-import Register from '../../components/Register.vue'
+import Login from '../../components/auth/Login.vue'
+import Register from '../../components/auth/Register.vue'
 
 const activeTab = ref('login')
 const router = useRouter()
