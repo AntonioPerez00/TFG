@@ -75,16 +75,24 @@ async function login() {
     })
 
     if (!response.ok) {
-      let errorText = 'Login fallido'
-      try {
-        const errorData = await response.json()
-        errorText = errorData.detail || errorText
-      } catch {
-        // No se pudo parsear JSON, mantenemos mensaje por defecto
-      }
-      error.value = errorText
-      return
+  let errorText = 'Login fallido'
+  try {
+    const errorData = await response.json()
+
+    // Buscar distintos posibles campos de error
+    if (errorData.detail) {
+      errorText = errorData.detail
+    } else {
+      errorText = Object.values(errorData).flat().join('\n')
     }
+  } catch {
+    errorText = 'Respuesta no válida del servidor'
+  }
+
+  error.value = errorText
+  return
+}
+
 
     let data = null
     try {

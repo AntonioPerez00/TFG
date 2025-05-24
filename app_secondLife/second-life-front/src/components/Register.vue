@@ -58,11 +58,16 @@ async function onSubmit() {
     })
 
     if (!response.ok) {
-      const errorData = await response.json()
-      console.error('Error en el registro:', errorData)
-      alert('Error en el registro: ' + JSON.stringify(errorData))
-      return
-    }
+  const errorData = await response.json()
+
+  const messages = Object.values(errorData)
+    .flat()
+    .join('\n') // Para mostrar múltiples errores si los hay
+
+  alert(`Error en el registro:\n${messages}`)
+  return
+}
+
 
     console.log('Usuario registrado con éxito')
     alert('Usuario registrado. Revisa tu correo para activarlo.')
