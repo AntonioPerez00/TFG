@@ -55,11 +55,6 @@ input:focus {
   border-bottom-color: #9f9a8f;
 }
 
-
-p{
-  color: #9f9a8f;
-}
-
 button{
   color: #9f9a8f;
   border: none;
@@ -68,7 +63,6 @@ button{
   margin-bottom: 30px;
   font-size: 19px;
 }
-
 
 hr{
   border-top: 1px solid #f1e2bc;
@@ -85,6 +79,10 @@ hr{
 }
 #login-register{
   border: 5px;
+}
+
+#error{
+  color: rgb(204, 101, 101);
 }
 
 </style>

@@ -21,7 +21,7 @@
       />
 
     </div>
-    <p v-if="error" class="text-red-500 text-sm">{{ error }}</p>
+    <p v-if="error" id="error">{{ error }}</p>
     <button type="submit" class="continuar">
       Iniciar sesión
     </button>
