@@ -1,17 +1,19 @@
 <!-- src/views/AuthView.vue -->
 <template>
   <div class="flex items-center justify-center min-h-screen mt-[-5rem]">
-  <div id="card" >
+  <div id="card" class="bg-[#FFFDF8] border border-[#f1e2bc] rounded-[20px] p-[20px] pt-[10px] w-fit">
     <div id="login-register">
       <div>
         <button
-          :class="['flex-1 text-center py-2', activeTab === 'login' ? 'border-b-2 border-teal-500 font-bold' : 'text-gray-500']"
+          :class="['flex-1 text-center py-2 bg-transparent pt-[10px] pb-[10px] pl-[25px] pr-[25px] mb-[30px] text-[19px] text-[#9f9a8f]', 
+          activeTab === 'login' ? 'border-t-0 border-l-0 border-r-0 border-[#FFFDF8]' : 'border-none']"
           @click="activeTab = 'login'"
         >
           Iniciar sesión
         </button>
         <button
-          :class="['flex-1 text-center py-2', activeTab === 'register' ? 'border-b-2 border-teal-500 font-bold' : 'text-gray-500']"
+          :class="['flex-1 text-center py-2 bg-transparent pt-[10px] pb-[10px] pl-[25px] pr-[25px] mb-[30px] text-[19px] text-[#9f9a8f]', 
+          activeTab === 'register' ? 'border-t-0 border-l-0 border-r-0 border-[#FFFDF8]' : 'border-none']"
           @click="activeTab = 'register'"
         >
           Registrarse
@@ -24,68 +26,6 @@
   </div>
   </div>
 </template>
-
-<style>
-
-.continuar{
-  background-color: #299CA9;
-  border: none;
-  color: white;
-  border-radius: 10px;
-  margin-top: 2rem;
-}
-
-input{
-  border: none;
-  border-bottom: solid;
-  padding: 3px;
-  margin-bottom: 25px;
-  color: #9f9a8f;
-  font-size: 18px;
-}
-
-input::placeholder{
-  color: #9f9a8f;
-}
-
-input:focus {
-  outline: none;
-  box-shadow: none; /* para quitar sombras */
-  border-color: transparent; /* o el color que quieras */
-  border-bottom-color: #9f9a8f;
-}
-
-button{
-  color: #9f9a8f;
-  border: none;
-  padding: 10px 25px;
-  background-color: transparent;
-  margin-bottom: 30px;
-  font-size: 19px;
-}
-
-hr{
-  border-top: 1px solid #f1e2bc;
-}
-
-#card{
-  background-color: #FFFDF8;
-  border-style: solid;
-  border-radius: 20px;
-  border-color: #f1e2bc;
-  padding: 20px;
-  padding-top: 10px;
-  width: fit-content;
-}
-#login-register{
-  border: 5px;
-}
-
-#error{
-  color: rgb(204, 101, 101);
-}
-
-</style>
 
 <script setup>
 import { ref } from 'vue'

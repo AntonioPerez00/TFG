@@ -1,9 +1,17 @@
 <template>
-  <form @submit.prevent="onSubmit" class="space-y-4">
+  <form @submit.prevent="onSubmit" class="flex flex-col">
     <template v-if="!isCodeStep">
-      <input v-model="email" type="email" placeholder="E-mail" required />
-      <input v-model="username" type="text" placeholder="Nombre de usuario" required />
-      <div class="passwd">
+      <input
+      v-model="email"
+      type="email"
+      placeholder="E-mail"
+      required
+      class="border-0 border-b border-b-[#9f9a8f] p-[3px] mb-[25px] text-[#9f9a8f] text-[18px] bg-[#FFFDF8] focus:outline-none placeholder-[#9f9a8f]"
+    />
+      <input v-model="username" type="text" placeholder="Nombre de usuario" required
+        class="border-0 border-b border-b-[#9f9a8f] p-[3px] mb-[25px] text-[#9f9a8f] text-[18px] bg-[#FFFDF8] focus:outline-none placeholder-[#9f9a8f]"
+      />
+      <div class="border-0 border-b border-b-[#9f9a8f]">
         <input
           :key="showFrontPasswordRegister"
           v-model="frontPasswordRegister"
@@ -11,20 +19,21 @@
           placeholder="Contraseña"
           required
           style="padding-bottom: 0px; margin: 5px; margin-left: 0px;"
-          class="border-none"
+          class="border-none p-[3px] mb-[25px] text-[#9f9a8f] text-[18px] bg-[#FFFDF8] focus:outline-none placeholder-[#9f9a8f]"
         />
         <img
           :src="showFrontPasswordRegister ? eye : invisible"
           @click="showFrontPasswordRegister = !showFrontPasswordRegister"
           alt="Toggle password"
+          class="w-[18px] float-right mt-[8px]"
         />
       </div>
-      <button type="submit" class="continuar">Continuar</button>
+      <button type="submit" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[10px] mt-[2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[19px]">Continuar</button>
     </template>
 
     <template v-else>
-      <input v-model="code" type="text" placeholder="Código de verificación" required />
-      <button @click.prevent="verifyCode" class="continuar">Verificar código</button>
+      <input v-model="code" type="text" placeholder="Código de verificación" required class="border-0 border-b border-b-[#9f9a8f] p-[3px] mb-[25px] text-[#9f9a8f] text-[18px] bg-[#FFFDF8] focus:outline-none placeholder-[#9f9a8f]"/>
+      <button @click.prevent="verifyCode" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[10px] mt-[2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[19px]">Verificar código</button>
     </template>
   </form>
 </template>

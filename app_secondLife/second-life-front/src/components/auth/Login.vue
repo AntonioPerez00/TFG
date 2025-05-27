@@ -2,9 +2,16 @@
 
 <template>
   <div id="login-container">
-    <form @submit.prevent="login">
-    <input v-model="mail" type="mail" placeholder="E-mail" required />
-    <div class="passwd">
+    <form @submit.prevent="login" class="flex flex-col">
+    <input
+      v-model="mail"
+      type="email"
+      placeholder="E-mail"
+      required
+      class="border-0 border-b border-b-[#9f9a8f] p-[3px] mb-[25px] text-[#9f9a8f] text-[18px] bg-[#FFFDF8] focus:outline-none placeholder-[#9f9a8f]"
+    />
+
+    <div class="border-0 border-b border-b-[#9f9a8f]">
       <input
         :key="showFrontPassword"
         v-model="password"
@@ -12,42 +19,23 @@
         placeholder="Contraseña"
         required
         style="padding-bottom: 0px; margin: 5px; margin-left: 0px;"
-        class="border-none"
-      />
+        class="border-none p-[3px] mb-[25px] text-[#9f9a8f] text-[18px] bg-[#FFFDF8] focus:outline-none placeholder-[#9f9a8f]"
+/>
       <img
         :src="showFrontPassword ? eye : invisible"
         @click="showFrontPassword = !showFrontPassword"
         alt="Toggle password"
+        class="w-[18px] float-right mt-[8px]"
       />
 
     </div>
-    <p v-if="error" id="error">{{ error }}</p>
-    <button type="submit" class="continuar">
+    <p v-if="error" id="error" class="text-[#CC6565]">{{ error }}</p>
+    <button type="submit" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[10px] mt-[2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[19px]">
       Iniciar sesión
     </button>
   </form>
   </div>
 </template>
-
-<style>
-
-img{
-  width: 18px;
-  float: right;
-  margin-top: 8px;
-}
-
-form {
- display: flex;
- flex-direction: column;
-}
-
-.passwd{
-  border-bottom: solid;
-  color: #9f9a8f;
-  padding: 0px;
-}
-</style>
 
 <script setup>
 import { ref } from 'vue'

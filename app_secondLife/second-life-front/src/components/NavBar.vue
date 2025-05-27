@@ -17,24 +17,12 @@
     </div>
 
     <div class="menu">
-        <span class="nombre-usuario">usuario</span>
+        <span class="nombre-usuario">Iniciar sesión</span>
         <img src="/usuario.png" alt="usurio" class="usuario-img" />
     </div>
   </nav>
 
-  <!-- Relleno para scroll -->
-  <main class="content">
-    <h1>Bienvenido a SecondLife</h1>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
-      venenatis, nunc id gravida aliquet, arcu urna blandit lectus, sed
-      commodo nunc eros sit amet magna. Pellentesque habitant morbi tristique
-      senectus et netus et malesuada fames ac turpis egestas.
-    </p>
-    <p v-for="n in 40" :key="n">
-      Este es un párrafo de relleno para que puedas probar el scroll. Número {{ n }}.
-    </p>
-  </main>
+  
 </template>
 
 <script setup>
