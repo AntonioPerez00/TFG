@@ -17,9 +17,22 @@
     </div>
 
     <div class="menu">
-        <span class="nombre-usuario">Iniciar sesión</span>
+  <span class="nombre-usuario">
+    {{ nombreUsuario || 'Iniciar sesión' }}
+  </span>
+  <img
+    :src="profile_pic || '/usuario.png'"
+    alt="usuario"
+    class="w-[2.5rem] h-[2.5rem] rounded-full"
+  />
+</div>
+
+  <!-- <div class="menu">
+        <span class="nombre-usuario">
+  {{ nombreUsuario || 'Iniciar sesión' }}
+</span>
         <img src="/usuario.png" alt="usurio" class="usuario-img" />
-    </div>
+    </div> -->
   </nav>
 
   
@@ -30,7 +43,13 @@ import { ref, onMounted, onUnmounted } from 'vue'
 
 const isVisible = ref(true)
 const searchQuery = ref('')
+const nombreUsuario = ref('')
+const profile_pic = ref('')
 let lastScrollY = window.scrollY // Guarda la posición previa del scroll
+
+nombreUsuario.value = localStorage.getItem('name')
+profile_pic.value = localStorage.getItem('profile_pic')
+console.log(profile_pic.value);
 
 function handleScroll() {
   const currentY = window.scrollY // Posición actúal

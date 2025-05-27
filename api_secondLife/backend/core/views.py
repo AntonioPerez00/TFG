@@ -82,22 +82,30 @@ def verify_email_code(request):
         return Response({"mensaje": "Correo verificado correctamente"})
     return Response({"error": "Código inválido o expirado"}, status=400)
 
+from django.conf import settings
+
 @api_view(['POST'])
 def login_user(request):
-    print("Request data:", request.data)
     mail = request.data.get('mail')
     password = request.data.get('password')
 
     if not mail or not password:
-        print("Faltan mail o password")
         return Response({'error': 'Faltan credenciales'}, status=status.HTTP_400_BAD_REQUEST)
 
     user = authenticate(request, mail=mail, password=password)
     if user:
         refresh = RefreshToken.for_user(user)
+        profile_pic_url = ''
+        if user.profile_pic:
+            profile_pic_url = request.build_absolute_uri(user.profile_pic.url)
+        
+        print(f"Usuario autenticado: mail={user.mail}, name={user.name}, profile_pic_url={profile_pic_url}")
         return Response({
             'refresh': str(refresh),
             'access': str(refresh.access_token),
+            'mail': user.mail,
+            'name': user.name,
+            'profile_pic': profile_pic_url,
         })
     return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
 

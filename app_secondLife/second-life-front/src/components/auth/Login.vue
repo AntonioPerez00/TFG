@@ -92,6 +92,9 @@ async function login() {
 
     localStorage.setItem('access_token', data.access)
     localStorage.setItem('refresh_token', data.refresh)
+    localStorage.setItem('name', data.name)
+    localStorage.setItem('mail', data.mail)
+    localStorage.setItem('profile_pic', data.profile_pic)
 
     emit('authenticated')
   } catch (err) {
