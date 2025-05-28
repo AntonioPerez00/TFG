@@ -40,6 +40,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 
 const isVisible = ref(true)
 const searchQuery = ref('')
@@ -57,17 +58,18 @@ function handleScroll() {
   lastScrollY = currentY
 }
 
-function handleSearch() {
-  console.log('Buscar:', searchQuery.value)
-  // Aquí puedes emitir evento o hacer filtro según lo que quieras
-}
-
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
 })
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
 })
+
+const emit = defineEmits(['buscar'])
+
+function handleSearch() {
+  emit('buscar', searchQuery.value)
+}
 </script>
 
 <style>
