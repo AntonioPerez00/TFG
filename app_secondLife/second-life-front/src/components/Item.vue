@@ -1,12 +1,20 @@
 <template>
   <div class="flex flex-col">
-    <div class="bg-[#FFFFFF] w-[150px] h-[200px] border rounded-[10px]"></div>
-    <span>Producto1</span>
-    <span>9800</span>
-    <span>Buen estado</span>
+    <img
+      :src="producto.picture || '/usuario.png'"
+      alt="usuario"
+      class="w-[9rem] h-[12rem] rounded-[0.75rem] mb-[0.5rem]"
+    />
+    <div class="flex flex-col pl-[0.4rem] gap-[0.2rem]">
+      <span><b>{{ producto.name }}</b></span>
+      <span>{{ producto.price }} €</span>
+      <span>{{ producto.state }}</span>
+    </div>
   </div>
 </template>
 
 <script setup>
-// Todo estático por ahora
+defineProps({
+  producto: Object
+})
 </script>
