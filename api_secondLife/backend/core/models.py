@@ -62,10 +62,10 @@ class Product(models.Model):
 ]
 
     DISPONIBILITY_CHOICES = [
-    ('En venta', 'en_venta'),
-    ('Vendido', 'vendido'),
-    ('Reservado', 'reservado'),
-    ('Cancelado', 'cancelado'),
+    ('en_venta', 'En venta'),
+    ('vendido', 'Vendido'),
+    ('reservado', 'Reservado'),
+    ('cancelado', 'Cancelado'),
 ]
 
 
