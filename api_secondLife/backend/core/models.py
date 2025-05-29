@@ -54,19 +54,20 @@ class Rating(models.Model):
 
 class Product(models.Model):
     STATE_CHOICES = [
-        ('como_nuevo', 'Como nuevo'),
-        ('muy_bueno', 'Muy bueno'),
-        ('bueno', 'Bueno'),
-        ('regular', 'Regular'),
-        ('no_funciona', 'No funciona'),
-    ]
+    ('Como nuevo', 'como_nuevo'),
+    ('Muy bueno', 'muy_bueno'),
+    ('Bueno', 'bueno'),
+    ('Regular', 'regular'),
+    ('No funciona', 'no_funciona'),
+]
 
     DISPONIBILITY_CHOICES = [
-        ('en_venta', 'En venta'),
-        ('vendido', 'Vendido'),
-        ('reservado', 'Reservado'),
-        ('cancelado', 'Cancelado'),
-    ]
+    ('En venta', 'en_venta'),
+    ('Vendido', 'vendido'),
+    ('Reservado', 'reservado'),
+    ('Cancelado', 'cancelado'),
+]
+
 
     price = models.IntegerField(help_text="Introduce el precio del producto.")
     name = models.CharField(max_length=45, null=True, blank=True, help_text="Introduce el nombre del producto.")

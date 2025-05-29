@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import User
 from .models import Product
+from .models import Category
 
 class UserRegistroSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,3 +21,8 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = '__all__'
         read_only_fields = ('user',)
+        
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name']

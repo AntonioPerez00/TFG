@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
-from .serializers import UserRegistroSerializer
-from .models import User
+from .serializers import CategorySerializer, UserRegistroSerializer
+from .models import Category, User
 from rest_framework import viewsets
 from .models import Product
 from .serializers import ProductSerializer
@@ -165,3 +165,15 @@ def mark_product_sold(request, product_id):
     product.save()
     
     return Response({"mensaje": "Producto marcado como vendido"})
+
+
+@api_view(['GET'])
+def get_categories(request):
+    categories = Category.objects.all()
+    serializer = CategorySerializer(categories, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def get_product_states(request):
+    states = [{"value": value, "label": label} for value, label in Product.STATE_CHOICES]
+    return Response(states)

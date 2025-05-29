@@ -5,7 +5,7 @@
       <Filtros />
 
       <main class="flex flex-col mt-[80px] p-[20px] ml-[20rem] flex-grow">
-        <h1 class="text-2xl font-bold">Bienvenido a SecondLife</h1>
+        <div><p class="text-[#9f9a8f] text-[18px]">Dale una segunda vida a tus cosas</p></div>
         <div class="flex flex-wrap gap-[4rem]">
           <Item
             v-for="producto in productos"
