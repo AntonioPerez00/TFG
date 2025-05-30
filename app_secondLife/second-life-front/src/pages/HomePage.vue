@@ -32,8 +32,10 @@ import api from '../services/api'
 import NavBar from '../components/NavBar.vue'
 import Filtros from '../components/FilterBar.vue'
 import Item from '../components/Item.vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+
 const router = useRouter()
+const route = useRoute()
 
 function productDetails(producto) {
   router.push(`/product/${producto.id}`)
@@ -55,10 +57,15 @@ async function filtrarProductos(busqueda = '', filtros = {}) {
     price__gte: filtros.precioDesde,
     price__lte: filtros.precioHasta,
     ordering: filtros.orden,
-    // Otros filtros si los tienes, como:
-    // user__location: filtros.localizacion,
-    // disponibility: filtros.disponibilidad,
   }
+
+  // para limpiar las queries vacías y que no aparezcan
+  const queryParams = Object.fromEntries(
+    Object.entries(params).filter(([_, v]) => v !== '' && v !== undefined)
+  )
+
+  router.replace({ path: '/home', query: queryParams })
+
 
   try {
     const [response] = await Promise.all([
@@ -85,8 +92,21 @@ function actualizarFiltros(nuevosFiltros) {
 }
 
 onMounted(() => {
-  filtrarProductos('') // carga todos inicialmente
+  const query = route.query
+
+  filtrosActivos.value = {
+    categoria: query.category || '',
+    estado: query.state || '',
+    precioDesde: query.price__gte || '',
+    precioHasta: query.price__lte || '',
+    orden: query.ordering || 'price'
+  }
+
+  busquedaActual.value = query.search || ''
+
+  filtrarProductos(busquedaActual.value, filtrosActivos.value)
 })
+
 </script>
 
 <style>
