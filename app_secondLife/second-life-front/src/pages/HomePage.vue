@@ -2,7 +2,7 @@
   <div class="bg-[#FFFDF8] relative min-h-screen">
     <NavBar @buscar="filtrarProductos" />
     <div class="pt-20 px-8 flex gap-6">
-      <Filtros />
+      <Filtros @filtrar-productos="filtrarProductos"/>
 
       <main class="flex flex-col mt-[80px] p-[20px] ml-[20rem] flex-grow">
         <div><p class="text-[#9f9a8f] text-[18px]">Dale una segunda vida a tus cosas</p></div>
@@ -34,6 +34,7 @@ const productos = ref([])
 const loading = ref(false)
 
 async function filtrarProductos(busqueda) {
+  console.log("filtrando...");
   loading.value = true
 
   const fetchPromise = api.get('/products/', {

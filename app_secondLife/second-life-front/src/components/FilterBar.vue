@@ -60,7 +60,7 @@
     </details>
 
     <div class="mt-[2rem] p-0 flex">
-      <button @click="$emit('aplicar-filtros', filtros)" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[15px] cursor-pointer">
+      <button @click="$emit('filtrar-productos', filtros)" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[15px] cursor-pointer">
         Filtrar
       </button>
 
@@ -83,6 +83,7 @@ const filtros = ref({
   estado: '',
 })
 
+const emit = defineEmits(['filtrar-productos'])
 const categorias = ref([])
 const estados = ref([])
 
@@ -108,7 +109,7 @@ function resetFiltros() {
     estado: '',
   }
   // Emitimos los filtros reseteados
-  emit('aplicar-filtros', filtros.value)
+  emit('filtrar-productos', filtros.value)
 }
 
 onMounted(() => {
