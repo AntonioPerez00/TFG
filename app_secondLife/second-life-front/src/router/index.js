@@ -2,11 +2,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '../pages/HomePage.vue'
 import AuthView from '../pages/auth/AuthView.vue'
+import ProductDetails from '../pages/ProductDetails.vue'
 
 const routes = [
   { path: '/', redirect: '/auth' },
   { path: '/auth', component: AuthView },
   { path: '/home', component: HomePage },
+  { path: '/product/:id', component: ProductDetails },
 ]
 
 const router = createRouter({

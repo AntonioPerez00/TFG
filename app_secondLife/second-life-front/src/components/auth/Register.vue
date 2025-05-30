@@ -28,7 +28,7 @@
           class="w-[18px] float-right mt-[8px]"
         />
       </div>
-      <button type="submit" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[10px] mt-[2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[19px]">Continuar</button>
+      <button type="submit" class="bg-[#299CA9] pointer-cursor border-none text-[#FFFFFF] rounded-[10px] mt-[2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[19px]">Continuar</button>
     </template>
 
     <template v-else>

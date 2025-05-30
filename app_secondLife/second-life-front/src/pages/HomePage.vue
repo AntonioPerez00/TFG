@@ -11,7 +11,10 @@
             v-for="producto in productos"
             :key="producto.id"
             :producto="producto"
+            class="cursor-pointer"
+            @click="productDetails(producto)"
           />
+
         </div>
       </main>
     </div>
@@ -29,6 +32,12 @@ import api from '../services/api'
 import NavBar from '../components/NavBar.vue'
 import Filtros from '../components/FilterBar.vue'
 import Item from '../components/Item.vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+function productDetails(producto) {
+  router.push(`/product/${producto.id}`)
+}
 
 const productos = ref([])
 const loading = ref(false)
@@ -45,6 +54,7 @@ async function filtrarProductos(busqueda = '', filtros = {}) {
     state: filtros.estado,
     price__gte: filtros.precioDesde,
     price__lte: filtros.precioHasta,
+    ordering: filtros.orden,
     // Otros filtros si los tienes, como:
     // user__location: filtros.localizacion,
     // disponibility: filtros.disponibilidad,
