@@ -1,8 +1,8 @@
 <template>
   <div class="bg-[#FFFDF8] relative min-h-screen">
-    <NavBar @buscar="filtrarProductos" />
+    <NavBar @buscar="actualizarBusqueda" />
     <div class="pt-20 px-8 flex gap-6">
-      <Filtros @filtrar-productos="filtrarProductos"/>
+      <Filtros @filtrar-productos="actualizarFiltros"/>
 
       <main class="flex flex-col mt-[80px] p-[20px] ml-[20rem] flex-grow">
         <div><p class="text-[#9f9a8f] text-[18px]">Dale una segunda vida a tus cosas</p></div>
@@ -33,24 +33,45 @@ import Item from '../components/Item.vue'
 const productos = ref([])
 const loading = ref(false)
 
-async function filtrarProductos(busqueda) {
-  console.log("filtrando...");
+const busquedaActual = ref('')
+const filtrosActivos = ref({})
+
+async function filtrarProductos(busqueda = '', filtros = {}) {
   loading.value = true
 
-  const fetchPromise = api.get('/products/', {
-    params: { search: busqueda }
-  })
-
-  const delay = new Promise(resolve => setTimeout(resolve, 200)) // 1 segundo
+  const params = {
+    search: busqueda,
+    category: filtros.categoria,
+    state: filtros.estado,
+    price__gte: filtros.precioDesde,
+    price__lte: filtros.precioHasta,
+    // Otros filtros si los tienes, como:
+    // user__location: filtros.localizacion,
+    // disponibility: filtros.disponibilidad,
+  }
 
   try {
-    const [response] = await Promise.all([fetchPromise, delay])
+    const [response] = await Promise.all([
+      api.get('/products/', { params }),
+      new Promise(resolve => setTimeout(resolve, 200)) // spinner delay
+    ])
     productos.value = response.data
   } catch (error) {
     console.error('Error al cargar productos:', error)
   } finally {
     loading.value = false
   }
+}
+
+// Estas funciones se ejecutan al recibir los emits:
+function actualizarBusqueda(nuevaBusqueda) {
+  busquedaActual.value = nuevaBusqueda
+  filtrarProductos(busquedaActual.value, filtrosActivos.value)
+}
+
+function actualizarFiltros(nuevosFiltros) {
+  filtrosActivos.value = nuevosFiltros
+  filtrarProductos(busquedaActual.value, nuevosFiltros)
 }
 
 onMounted(() => {

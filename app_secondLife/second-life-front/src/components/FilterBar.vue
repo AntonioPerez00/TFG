@@ -60,7 +60,7 @@
     </details>
 
     <div class="mt-[2rem] p-0 flex">
-      <button @click="$emit('filtrar-productos', filtros)" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[15px] cursor-pointer">
+      <button @click="aplicarFiltros" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[15px] cursor-pointer">
         Filtrar
       </button>
 
@@ -100,6 +100,10 @@ async function fetchFiltrosOptions() {
   }
 }
 
+function aplicarFiltros() {
+  emit('filtrar-productos', filtros.value)
+}
+
 function resetFiltros() {
   filtros.value = {
     orden: 'Ascendente',
@@ -109,7 +113,9 @@ function resetFiltros() {
     estado: '',
   }
   // Emitimos los filtros reseteados
-  emit('filtrar-productos', filtros.value)
+  // emit('filtrar-productos', filtros.value)
+  // Comentado por si se quiere activar
+  // Ahora mismo no me interesa que se apliquen los filtros al borrar
 }
 
 onMounted(() => {
