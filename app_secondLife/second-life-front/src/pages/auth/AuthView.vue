@@ -41,7 +41,6 @@ function goToHome() {
 }
 
 function switchToLogin() {
-  console.log('Cambiar a login')  // <-- esto debería aparecer ahora
   activeTab.value = 'login'
 }
 </script>

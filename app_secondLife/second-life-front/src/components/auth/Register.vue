@@ -78,7 +78,6 @@ async function onSubmit() {
 }
 
 
-    console.log('Usuario registrado con éxito')
     alert('Usuario registrado. Revisa tu correo para activarlo.')
     isCodeStep.value = true // ← Cambia al paso del código
   } catch (error) {

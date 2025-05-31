@@ -50,7 +50,6 @@ let lastScrollY = window.scrollY // Guarda la posición previa del scroll
 
 nombreUsuario.value = localStorage.getItem('name')
 profile_pic.value = localStorage.getItem('profile_pic')
-console.log(profile_pic.value);
 
 function handleScroll() {
   const currentY = window.scrollY // Posición actúal
