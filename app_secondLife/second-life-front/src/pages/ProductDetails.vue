@@ -3,15 +3,15 @@
     <NavBar />
 
     <div class="flex justify-center">
-      <div class="w-[48rem] h-[fit] bg-[#FFFFFF] mt-[8rem] shadow-[0_2px_4px_rgba(0,0,0,0.1)] rounded-[2rem] p-[2rem]">
-        <div>
+      <div class="w-[48rem] h-[fit] bg-[#FFFFFF] mt-[8rem] mb-[8rem] shadow-[0_2px_4px_rgba(0,0,0,0.1)] rounded-[2rem] p-[2rem]">
+        <div class="mb-[1.5rem] flex items-center gap-2">
           <img
-            :src="getFullImageUrl(producto?.user?.profile_pic)"
-            alt="usuario"
+            :src="producto.user.profile_pic || '/usuario.png'"
             class="w-[2.5rem] h-[2.5rem] rounded-full"
           />
-
+          <span class="ml-[0.5rem]">{{ producto.user.name }}</span>
         </div>
+
         <div id="pictures" class="flex flex-row gap-[2rem]">
           <div>
             <img :src="producto.picture || '/usuario.png'"
@@ -32,10 +32,29 @@
               class="w-[11rem] h-[15rem] rounded-[1rem]"     
             >
           </div>
+        </div>  
+        <div class="ml-[1rem] mt-[1rem] flex flex-col gap-[1rem]">
+          <span class="text-[2rem] font-bold">
+            {{ producto.price }} €
+          </span>
+
+          <span class="text-[2rem] font-bold">
+            {{ producto.name }}
+          </span>
+
+          <span class="whitespace-pre-line text-[1rem]">
+            {{ producto.description }}
+          </span>
+
+          <button @click="aplicarFiltros" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[15px] cursor-pointer mt-[2rem]">
+          Comprar
+          </button>
+
         </div>
+
+        
       </div>
     </div>
-    
   </div>
 </template>
 
@@ -59,8 +78,7 @@ onMounted(async () => {
   try {
     const res = await api.get(`/products/${route.params.id}/`)
     producto.value = res.data
-    console.log('Producto recibido:', producto.value)
-    console.log('User dentro del producto:', producto.value.user)
+    console.log(producto.description)
   } catch (error) {
     console.error('Error al cargar el producto:', error)
   } finally {

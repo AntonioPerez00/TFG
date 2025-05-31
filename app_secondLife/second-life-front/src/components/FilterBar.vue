@@ -11,8 +11,8 @@
       <summary class="cursor-pointer text-base font-medium">Ordenar</summary>
       <div class="mt-2">
         <select class="select_category" v-model="filtros.orden">
-          <option value="price">Ascendente</option>
-          <option value="-price">Descendente</option>
+          <option value="price">Precio ascendente</option>
+          <option value="-price">Precio descendente</option>
           <option value="created_at">Más reciente</option>
           <option value="-created_at">Más antiguo</option>
         </select>
@@ -78,7 +78,7 @@ import { ref, onMounted } from 'vue'
 import api from '../services/api'
 
 const filtros = ref({
-  orden: 'price',
+  orden: 'created_at',
   categoria: '',
   precioDesde: '',
   precioHasta: '',
@@ -108,7 +108,7 @@ function aplicarFiltros() {
 
 function resetFiltros() {
   filtros.value = {
-    orden: 'price',
+    orden: 'created_at',
     categoria: '',
     precioDesde: '',
     precioHasta: '',

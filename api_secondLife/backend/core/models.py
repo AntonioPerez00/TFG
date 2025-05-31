@@ -73,7 +73,7 @@ class Product(models.Model):
     name = models.CharField(max_length=45, null=True, blank=True, help_text="Introduce el nombre del producto.")
     user = models.ForeignKey(User, on_delete=models.CASCADE, help_text="Introduce el nombre del producto.")
     category = models.ForeignKey(Category, on_delete=models.RESTRICT, help_text="Introduce la categoría del producto.")
-    description = models.CharField(max_length=200, null=True, blank=True, help_text="Introduce la descripción del producto.")
+    description = models.TextField(max_length=5000, null=True, blank=True, help_text="Introduce la descripción del producto.")
     picture = models.ImageField(upload_to='products/', null=True, blank=True)
     disponibility = models.CharField(
         max_length=20, choices=DISPONIBILITY_CHOICES, default=DISPONIBILITY_CHOICES[0][0], null=True, blank=True, help_text="Introduce la disponibilidad del producto."
