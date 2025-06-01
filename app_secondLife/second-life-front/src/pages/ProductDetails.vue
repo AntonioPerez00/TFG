@@ -19,16 +19,16 @@
             >
           </div>
           <div class="flex flex-row gap-[1rem] flex-wrap">
-            <img :src="producto.picture1 || '/usuario.png'"
+            <img :src="producto.picture2 || '/usuario.png'"
               class="w-[11rem] h-[14.7rem] rounded-[1rem]"      
             >
-            <img :src="producto.picture1 || '/usuario.png'"
+            <img :src="producto.picture3 || '/usuario.png'"
               class="w-[11rem] h-[14.7rem] rounded-[1rem]"     
             >
-            <img :src="producto.picture1 || '/usuario.png'"
+            <img :src="producto.picture4 || '/usuario.png'"
               class="w-[11rem] h-[15rem] rounded-[1rem]"       
             >
-            <img :src="producto.picture1 || '/usuario.png'"
+            <img :src="producto.picture5 || '/usuario.png'"
               class="w-[11rem] h-[15rem] rounded-[1rem]"     
             >
           </div>
