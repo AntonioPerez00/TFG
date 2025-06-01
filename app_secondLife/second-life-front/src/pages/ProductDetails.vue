@@ -12,25 +12,27 @@
           <span class="ml-[0.5rem]">{{ producto.user.name }}</span>
         </div>
 
-        <div id="pictures" class="mb-6">
-          <Swiper
-            :slides-per-view="1"
-            :navigation="true"
-            :pagination="{ clickable: true }"
-            class="w-full max-w-[40rem] rounded-[1rem]"
-          >
-            <SwiperSlide
-              v-for="(img, index) in producto.pictures"
-              :key="index"
+        <div id="pictures" class="flex flex-row gap-[2rem]">
+          <div>
+            <img :src="producto.picture1 || '/usuario.png'"
+              class="w-[23rem] rounded-[1rem]"      
             >
-              <img
-                :src="img"
-                class="w-full h-[22rem] object-cover rounded-[1rem]"
-              />
-            </SwiperSlide>
-          </Swiper>
-        </div>
-
+          </div>
+          <div class="flex flex-row gap-[1rem] flex-wrap">
+            <img :src="producto.picture1 || '/usuario.png'"
+              class="w-[11rem] h-[14.7rem] rounded-[1rem]"      
+            >
+            <img :src="producto.picture1 || '/usuario.png'"
+              class="w-[11rem] h-[14.7rem] rounded-[1rem]"     
+            >
+            <img :src="producto.picture1 || '/usuario.png'"
+              class="w-[11rem] h-[15rem] rounded-[1rem]"       
+            >
+            <img :src="producto.picture1 || '/usuario.png'"
+              class="w-[11rem] h-[15rem] rounded-[1rem]"     
+            >
+          </div>
+        </div>  
         <div class="ml-[1rem] mt-[1rem] flex flex-col gap-[1rem]">
           <span class="text-[2rem] font-bold">
             {{ producto.price }} €
@@ -61,20 +63,34 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import api from '../services/api'
 import NavBar from '../components/NavBar.vue'
-import { Swiper, SwiperSlide } from 'swiper/vue'
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
-
 
 const route = useRoute()
 const router = useRouter()
 const producto = ref(null)
 const loading = ref(true)
 const backendURL = 'http://localhost:8000'
+const currentIndex = ref(0)
+
+const imgs = [
+  producto.picture1,
+  producto.picture2,
+  producto.picture3,
+  producto.picture4,
+  producto.picture5,
+].filter(Boolean)
 
 function checkout(producto) {
   router.push(`/checkout/${producto.id}`)
+}
+
+function prevImage() {
+  if (imgs.length === 0) return
+  currentIndex.value = (currentIndex.value - 1 + imgs.length) % imgs.length
+}
+
+function nextImage() {
+  if (imgs.length === 0) return
+  currentIndex.value = (currentIndex.value + 1) % imgs.length
 }
 
 onMounted(async () => {

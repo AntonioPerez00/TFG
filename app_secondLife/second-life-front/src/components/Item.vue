@@ -33,6 +33,8 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
+
 const { producto } = defineProps({
   producto: Object
 })
@@ -45,7 +47,6 @@ const imgs = [
   producto.picture5,
 ].filter(Boolean)
 
-import { ref } from 'vue'
 const currentIndex = ref(0)
 
 function prevImage() {
