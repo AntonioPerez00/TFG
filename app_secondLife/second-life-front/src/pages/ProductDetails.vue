@@ -12,27 +12,25 @@
           <span class="ml-[0.5rem]">{{ producto.user.name }}</span>
         </div>
 
-        <div id="pictures" class="flex flex-row gap-[2rem]">
-          <div>
-            <img :src="producto.picture || '/usuario.png'"
-              class="w-[23rem] rounded-[1rem]"      
+        <div id="pictures" class="mb-6">
+          <Swiper
+            :slides-per-view="1"
+            :navigation="true"
+            :pagination="{ clickable: true }"
+            class="w-full max-w-[40rem] rounded-[1rem]"
+          >
+            <SwiperSlide
+              v-for="(img, index) in producto.pictures"
+              :key="index"
             >
-          </div>
-          <div class="flex flex-row gap-[1rem] flex-wrap">
-            <img :src="producto.picture || '/usuario.png'"
-              class="w-[11rem] h-[14.7rem] rounded-[1rem]"      
-            >
-            <img :src="producto.picture || '/usuario.png'"
-              class="w-[11rem] h-[14.7rem] rounded-[1rem]"     
-            >
-            <img :src="producto.picture || '/usuario.png'"
-              class="w-[11rem] h-[15rem] rounded-[1rem]"       
-            >
-            <img :src="producto.picture || '/usuario.png'"
-              class="w-[11rem] h-[15rem] rounded-[1rem]"     
-            >
-          </div>
-        </div>  
+              <img
+                :src="img"
+                class="w-full h-[22rem] object-cover rounded-[1rem]"
+              />
+            </SwiperSlide>
+          </Swiper>
+        </div>
+
         <div class="ml-[1rem] mt-[1rem] flex flex-col gap-[1rem]">
           <span class="text-[2rem] font-bold">
             {{ producto.price }} €
