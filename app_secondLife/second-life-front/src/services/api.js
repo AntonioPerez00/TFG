@@ -14,4 +14,23 @@ api.interceptors.request.use((config) => {
   return config
 })
 
+// Manejar errores globales
+api.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response && error.response.status === 401) {
+      // 1. Eliminar token (opcional)
+      localStorage.removeItem('token')
+
+      // 2. Redirigir al login
+      router.push('/login')  // o donde manejes la autenticación
+
+      // 3. (opcional) Mostrar notificación
+      console.warn('Sesión expirada. Redirigiendo al login...')
+    }
+
+    return Promise.reject(error)
+  }
+)
+
 export default api
