@@ -13,26 +13,62 @@
         </div>
 
         <div id="pictures" class="flex flex-row gap-[2rem]">
-          <div>
-            <img :src="producto.picture1 || '/usuario.png'"
-              class="w-[23rem] rounded-[1rem]"      
-            >
+          <div v-if="producto.picture1">
+            <img
+              :src="producto.picture1"
+              class="w-[23rem] rounded-[1rem]"
+            />
           </div>
           <div class="flex flex-row gap-[1rem] flex-wrap">
-            <img :src="producto.picture2 || '/usuario.png'"
-              class="w-[11rem] h-[14.7rem] rounded-[1rem]"      
-            >
-            <img :src="producto.picture3 || '/usuario.png'"
-              class="w-[11rem] h-[14.7rem] rounded-[1rem]"     
-            >
-            <img :src="producto.picture4 || '/usuario.png'"
-              class="w-[11rem] h-[15rem] rounded-[1rem]"       
-            >
-            <img :src="producto.picture5 || '/usuario.png'"
-              class="w-[11rem] h-[15rem] rounded-[1rem]"     
-            >
+            <img
+              v-if="producto.picture2"
+              :src="producto.picture2"
+              class="w-[11rem] h-[15rem] rounded-[1rem]"
+            />
+            <img
+              v-if="producto.picture3"
+              :src="producto.picture3"
+              class="w-[11rem] h-[15rem] rounded-[1rem]"
+            />
+            <img
+              v-if="producto.picture4"
+              :src="producto.picture4"
+              class="w-[11rem] h-[15rem] rounded-[1rem]"
+            />
+            <img
+              v-if="producto.picture5"
+              :src="producto.picture5"
+              class="w-[11rem] h-[15rem] rounded-[1rem]"
+            />
           </div>
-        </div>  
+        </div>
+
+        <!-- <div id="pictures" class="flex justify-center">
+          <div class="relative w-[30rem] h-[35rem] flex items-center justify-center mb-[2rem]">
+            <img
+              :src="imgs[currentIndex] || '/usuario.png'"
+              alt="producto"
+              class="w-full h-full rounded-[1rem] object-cover"
+            />
+
+            <button
+              @click.stop="prevImage"
+              class="absolute left-[0rem] top-1/2 transform -translate-y-1/2 bg-[#ffffffcc] border-none py-2 px-3 hover:bg-[#d3d3d3] text-[2rem] rounded-l-[1rem] z-10"
+              aria-label="Imagen anterior"
+            >
+              ‹
+            </button>
+
+            <button
+              @click.stop="nextImage"
+              class="absolute right-[0rem] top-1/2 transform -translate-y-1/2 bg-[#ffffffcc] border-none py-2 px-3 hover:bg-[#d3d3d3] text-[2rem] rounded-r-[1rem] z-10"
+              aria-label="Imagen siguiente"
+            >
+              ›
+            </button>
+          </div>
+        </div> -->
+
         <div class="ml-[1rem] mt-[1rem] flex flex-col gap-[1rem]">
           <span class="text-[2rem] font-bold">
             {{ producto.price }} €
@@ -59,39 +95,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import api from '../services/api'
 import NavBar from '../components/NavBar.vue'
-
-const route = useRoute()
-const router = useRouter()
-const producto = ref(null)
-const loading = ref(true)
-const backendURL = 'http://localhost:8000'
-const currentIndex = ref(0)
-
-const imgs = [
-  producto.picture1,
-  producto.picture2,
-  producto.picture3,
-  producto.picture4,
-  producto.picture5,
-].filter(Boolean)
-
-function checkout(producto) {
-  router.push(`/checkout/${producto.id}`)
-}
-
-function prevImage() {
-  if (imgs.length === 0) return
-  currentIndex.value = (currentIndex.value - 1 + imgs.length) % imgs.length
-}
-
-function nextImage() {
-  if (imgs.length === 0) return
-  currentIndex.value = (currentIndex.value + 1) % imgs.length
-}
 
 onMounted(async () => {
   try {
@@ -102,6 +109,44 @@ onMounted(async () => {
   } finally {
     loading.value = false
   }
+  console.log(producto.value?.picture1)
+
 })
+
+const route = useRoute()
+const router = useRouter()
+const producto = ref(null)
+const loading = ref(true)
+const backendURL = 'http://localhost:8000'
+const currentIndex = ref(0)
+
+const imgs = computed(() => {
+  if (!producto.value) return []
+  return [
+    producto.value.picture1,
+    producto.value.picture2,
+    producto.value.picture3,
+    producto.value.picture4,
+    producto.value.picture5,
+  ].filter(Boolean)
+})
+
+
+
+function checkout(producto) {
+  router.push(`/checkout/${producto.id}`)
+}
+
+function prevImage() {
+  if (imgs.value.length === 0) return
+  currentIndex.value = (currentIndex.value - 1 + imgs.value.length) % imgs.value.length
+}
+
+function nextImage() {
+  if (imgs.value.length === 0) return
+  currentIndex.value = (currentIndex.value + 1) % imgs.value.length
+}
+
+
 
 </script>

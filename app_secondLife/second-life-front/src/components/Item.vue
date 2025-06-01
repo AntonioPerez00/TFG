@@ -17,7 +17,7 @@
 
     <!-- Botón derecho -->
     <button
-      @click.stop="nextImage"
+      @click.stop="nextImage" 
       class="absolute top-1/2 right-[0px] transform -translate-y-1/2 bg-transparent border-none px-2 py-1 hover:bg-[#D3D3D3] text-[1.7rem] hover:bg-gray-400 z-10"
       aria-label="Imagen siguiente"
     >
