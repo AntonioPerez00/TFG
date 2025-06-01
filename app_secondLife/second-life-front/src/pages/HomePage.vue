@@ -33,6 +33,9 @@ import NavBar from '../components/NavBar.vue'
 import Filtros from '../components/FilterBar.vue'
 import Item from '../components/Item.vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/auth'
+
+const authStore = useAuthStore()
 
 const router = useRouter()
 const route = useRoute()
@@ -92,6 +95,7 @@ function actualizarFiltros(nuevosFiltros) {
 }
 
 onMounted(() => {
+  authStore.checkAuth()
   const query = route.query
 
   filtrosActivos.value = {

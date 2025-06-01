@@ -1,5 +1,6 @@
 // src/services/api.js
 import axios from 'axios'
+import router from '../router'
 
 const api = axios.create({
   baseURL: 'http://localhost:8000/api',
@@ -14,23 +15,30 @@ api.interceptors.request.use((config) => {
   return config
 })
 
-// Manejar errores globales
+
 api.interceptors.response.use(
   response => response,
   error => {
-    if (error.response && error.response.status === 401) {
-      // 1. Eliminar token (opcional)
-      localStorage.removeItem('token')
+    // Si el error es 401 y venía de una petición con Authorization
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      error.config.headers.Authorization
+    ) {
+      // 1. Borrar tokens
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('refresh_token')
 
       // 2. Redirigir al login
-      router.push('/login')  // o donde manejes la autenticación
+      router.push('/auth')
 
-      // 3. (opcional) Mostrar notificación
-      console.warn('Sesión expirada. Redirigiendo al login...')
+      // 3. Mostrar aviso (opcional)
+      console.warn('Token expirado. Redirigiendo al login...')
     }
 
     return Promise.reject(error)
   }
 )
+
 
 export default api

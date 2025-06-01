@@ -46,7 +46,7 @@
             {{ producto.description }}
           </span>
 
-          <button @click="aplicarFiltros" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[15px] cursor-pointer mt-[2rem]">
+          <button @click="checkout(producto)" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[15px] cursor-pointer mt-[2rem]">
           Comprar
           </button>
 
@@ -60,25 +60,29 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import api from '../services/api'
 import NavBar from '../components/NavBar.vue'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+
 
 const route = useRoute()
+const router = useRouter()
 const producto = ref(null)
 const loading = ref(true)
 const backendURL = 'http://localhost:8000'
 
-const getFullImageUrl = (path) => {
-  if (!path) return '/usuario.png'
-  return path.startsWith('http') ? path : `${backendURL}${path.startsWith('/') ? '' : '/'}${path}`
+function checkout(producto) {
+  router.push(`/checkout/${producto.id}`)
 }
 
 onMounted(async () => {
   try {
     const res = await api.get(`/products/${route.params.id}/`)
     producto.value = res.data
-    console.log(producto.description)
   } catch (error) {
     console.error('Error al cargar el producto:', error)
   } finally {
