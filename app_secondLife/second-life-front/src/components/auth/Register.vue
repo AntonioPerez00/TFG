@@ -28,7 +28,34 @@
           class="w-[18px] float-right mt-[8px]"
         />
       </div>
-      <button type="submit" class="bg-[#299CA9] pointer-cursor border-none text-[#FFFFFF] rounded-[10px] mt-[2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[19px]">Continuar</button>
+
+      <div class="border-0 border-b border-b-[#9f9a8f] mt-[1.5rem]">
+        <input
+          :key="showFrontPasswordRegister"
+          v-model="confirmPassword"
+          :type="showFrontPasswordRegister ? 'text' : 'password'"
+          placeholder="Repite la contraseña"
+          required
+          style="padding-bottom: 0px; margin: 5px; margin-left: 0px;"
+          class="border-none p-[3px] mb-[5px] text-[#9f9a8f] text-[18px] bg-[#FFFDF8] focus:outline-none placeholder-[#9f9a8f]"
+        />
+        <img
+          :src="showFrontPasswordRegister ? eye : invisible"
+          @click="showFrontPasswordRegister = !showFrontPasswordRegister"
+          alt="Toggle password"
+          class="w-[18px] float-right mt-[8px]"
+        />
+      </div>
+
+      <p v-if="passwordMismatch" class="text-red-600 text-sm mb-[20px]">Las contraseñas no coinciden.</p>
+      <button
+        type="submit"
+        :disabled="passwordMismatch"
+        class="bg-[#299CA9] disabled:opacity-50 pointer-cursor border-none text-[#FFFFFF] rounded-[10px] mt-[2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[19px]"
+      >
+        Continuar
+      </button>
+
     </template>
 
     <template v-else>
@@ -39,9 +66,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import eye from '../../assets/ojo.png'
 import invisible from '../../assets/invisible.png'
+import { ref, watch } from 'vue'
 
 const email = ref('')
 const username = ref('')
@@ -49,6 +76,8 @@ const frontPasswordRegister = ref('')
 const showFrontPasswordRegister = ref(false)
 const isCodeStep = ref(false)
 const code = ref('')
+const confirmPassword = ref('')
+const passwordMismatch = ref(false)
 
 const emit = defineEmits(['registered'])
 
@@ -113,4 +142,9 @@ async function verifyCode() {
     alert('Error de red al verificar.')
   }
 }
+
+watch([frontPasswordRegister, confirmPassword], () => {
+  passwordMismatch.value =
+    frontPasswordRegister.value !== confirmPassword.value
+})
 </script>
