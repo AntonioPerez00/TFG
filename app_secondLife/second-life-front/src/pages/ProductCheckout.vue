@@ -107,9 +107,12 @@
             <span>{{ total }} €</span>
           </div>
 
-          
+          <button @click="checkout(producto)" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] text-[15px] cursor-pointer pt-[0.5rem] pb-[0.5rem] w-fit pl-[3rem] pr-[3rem]">
+          Pagar
+          </button>
         </div>
         
+
         
       </div>
     </div>
@@ -119,10 +122,11 @@
 
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import api from '../services/api'
 import NavBar from '../components/NavBar.vue'
 import { nextTick } from 'vue'
+import router from '../router'
 
 const route = useRoute()
 const tipoEntrega = ref('en_persona')
@@ -171,5 +175,22 @@ onMounted(async () => {
     loading.value = false
   }
 })
+
+const checkout = async (producto) => {
+  // Compruebo de nuevo que si ha puesto la direccion habiendo elegido esa opcion
+  if (tipoEntrega.value === 'direccion' && !direccionCompleta.value) {
+    alert('Debes completar todos los campos de dirección.')
+    return
+  }
+
+  try{
+    const res = await api.post(`/products/${producto.id}/mark_sold/`)
+    alert("Compra realizada con éxito")
+    router.push('/home')
+  } catch (error) {
+    console.error('Error al marcar como vendido: ', error)
+    alert('Hubo un error al procesar la compra. Intenta de nuevo.')
+  }
+}
 
 </script>
