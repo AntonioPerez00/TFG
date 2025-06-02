@@ -12,7 +12,7 @@
           <span class="ml-[0.5rem]">{{ producto.user.name }}</span>
         </div>
 
-        <div id="pictures" class="flex flex-row gap-[2rem]">
+        <!-- <div id="pictures" class="flex flex-row gap-[2rem]">
           <div v-if="producto.picture1">
             <img
               :src="producto.picture1"
@@ -41,9 +41,9 @@
               class="w-[11rem] h-[15rem] rounded-[1rem]"
             />
           </div>
-        </div>
+        </div> -->
 
-        <!-- <div id="pictures" class="flex justify-center">
+        <div id="pictures" class="flex justify-center">
           <div class="relative w-[30rem] h-[35rem] flex items-center justify-center mb-[2rem]">
             <img
               :src="imgs[currentIndex] || '/usuario.png'"
@@ -67,7 +67,7 @@
               ›
             </button>
           </div>
-        </div> -->
+        </div>
 
         <div class="ml-[1rem] mt-[1rem] flex flex-col gap-[1rem]">
           <span class="text-[2rem] font-bold">

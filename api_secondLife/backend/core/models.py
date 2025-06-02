@@ -58,7 +58,7 @@ class Product(models.Model):
     ('Muy bueno', 'muy_bueno'),
     ('Bueno', 'bueno'),
     ('Regular', 'regular'),
-    ('No funciona', 'no_funciona'),
+    ('Lo ha dado todo', 'Lo_ha_dado_todo'),
 ]
 
     DISPONIBILITY_CHOICES = [

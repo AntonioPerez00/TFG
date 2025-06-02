@@ -1,6 +1,6 @@
 <template>
   <nav :class="['navbar', { 'navbar-hidden': !isVisible }]">
-    <div class="logo-container">
+    <div class="logo-container cursor-pointer" @click="goToHome">
       <img src="/SecondLifeIcon.png" alt="Logo" class="logo-img" />
       <div class="logo">SecondLife</div>
     </div>
@@ -47,6 +47,11 @@ const searchQuery = ref('')
 const nombreUsuario = ref('')
 const profile_pic = ref('')
 let lastScrollY = window.scrollY // Guarda la posición previa del scroll
+const router = useRouter()
+
+function goToHome() {
+  router.push('/home')
+}
 
 nombreUsuario.value = localStorage.getItem('name')
 profile_pic.value = localStorage.getItem('profile_pic')
