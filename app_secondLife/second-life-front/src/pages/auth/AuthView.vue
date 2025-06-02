@@ -1,6 +1,7 @@
 <!-- src/views/AuthView.vue -->
 <template>
   <div class="flex items-center justify-center min-h-screen mt-[-5rem]">
+    <NavBar />
   <div id="card" class="bg-[#FFFDF8] border border-[#f1e2bc] rounded-[20px] p-[20px] pt-[10px] w-fit">
     <div id="login-register">
       <div>
@@ -28,6 +29,7 @@
 </template>
 
 <script setup>
+import NavBar from '../../components/SimpleNavBar.vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Login from '../../components/auth/Login.vue'
