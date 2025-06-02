@@ -42,7 +42,8 @@ const router = useRouter()
 const route = useRoute()
 
 function productDetails(producto) {
-  router.push(`/product/${producto.id}`)
+  const url = router.resolve(`/product/${producto.id}`).href
+  window.open(url, '_blank')
 }
 
 const productos = ref([])
