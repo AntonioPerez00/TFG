@@ -41,9 +41,11 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 const isVisible = ref(true)
-const searchQuery = ref('')
+const searchQuery = ref(route.query.search || '')
 const nombreUsuario = ref('')
 const profile_pic = ref('')
 let lastScrollY = window.scrollY // Guarda la posición previa del scroll
@@ -72,8 +74,11 @@ onUnmounted(() => {
 const emit = defineEmits(['buscar'])
 
 function handleSearch() {
-  emit('buscar', searchQuery.value)
+  localStorage.setItem('lastSearch', searchQuery.value)
+  router.push({ path: '/home', query: { search: searchQuery.value } }) // Envía búsqueda como query
+  emit('buscar', searchQuery.value) // Por si estás en Home
 }
+
 </script>
 
 <style>

@@ -34,6 +34,7 @@ import Filtros from '../components/FilterBar.vue'
 import Item from '../components/Item.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import { watch } from 'vue'
 
 const authStore = useAuthStore()
 
@@ -108,6 +109,19 @@ onMounted(() => {
 
   busquedaActual.value = query.search || ''
 
+  filtrarProductos(busquedaActual.value, filtrosActivos.value)
+})
+
+watch(() => route.query, (nuevaQuery) => {
+  filtrosActivos.value = {
+    categoria: nuevaQuery.category || '',
+    estado: nuevaQuery.state || '',
+    precioDesde: nuevaQuery.price__gte || '',
+    precioHasta: nuevaQuery.price__lte || '',
+    orden: nuevaQuery.ordering || 'price'
+  }
+
+  busquedaActual.value = nuevaQuery.search || ''
   filtrarProductos(busquedaActual.value, filtrosActivos.value)
 })
 
