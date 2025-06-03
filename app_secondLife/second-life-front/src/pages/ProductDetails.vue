@@ -4,7 +4,8 @@
 
     <div class="flex justify-center">
       <div class="w-[48rem] h-[fit] bg-[#FFFFFF] mt-[8rem] mb-[8rem] shadow-[0_2px_4px_rgba(0,0,0,0.1)] rounded-[2rem] p-[2rem]">
-        <div class="mb-[1.5rem] flex items-center gap-2">
+        <div class="mb-[1.5rem] flex items-center gap-2 cursor-pointer
+        hover:bg-[#eeeded] p-[6px] rounded-[20px] w-fit">
           <img
             :src="producto.user.profile_pic || '/usuario.png'"
             class="w-[2.5rem] h-[2.5rem] rounded-full"
