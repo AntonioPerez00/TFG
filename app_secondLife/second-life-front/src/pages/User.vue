@@ -40,7 +40,7 @@
             </div>
             <div class="pl-[1.5rem]">
                 <EnVenta v-if="activeTab === 'EnVenta'"/>
-                <Vendidos v-else @registered="switchToLogin" />
+                <Vendidos v-else/>
             </div>
 
         </div>

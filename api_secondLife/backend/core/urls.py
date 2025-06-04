@@ -7,7 +7,6 @@ from .views import mark_product_sold
 router = DefaultRouter()
 router.register(r'products', ProductViewSet, basename='product')
 
-# URLs de autenticación
 urlpatterns = [
     path('registro/', register_user),
     path('login/', login_user),

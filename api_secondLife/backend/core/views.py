@@ -150,6 +150,31 @@ class ProductViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+class MyProductViewSet(viewsets.ModelViewSet):
+    serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
+
+    filterset_fields = {
+        'category': ['exact'],
+        'disponibility': ['exact'],
+        'state': ['exact'],
+        'user__location': ['exact'],
+        'price': ['gte', 'lte'],
+    }
+    
+    ordering_fields = ['price', 'created_at']
+    search_fields = ['name', 'description']
+    
+    def get_queryset(self):
+        # Devuelve solo productos del usuario autenticado
+        return Product.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def mark_product_sold(request, product_id):
