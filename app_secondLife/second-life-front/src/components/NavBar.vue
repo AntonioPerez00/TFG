@@ -16,23 +16,24 @@
       <button class="search-button" @click="handleSearch">Buscar</button>
     </div>
 
-    <div class="menu">
-  <span class="nombre-usuario">
-    {{ nombreUsuario || 'Iniciar sesión' }}
-  </span>
-  <img
-    :src="profile_pic || '/usuario.png'"
-    alt="usuario"
-    class="w-[2.5rem] h-[2.5rem] rounded-full"
-  />
-</div>
+    <div class="menu" @click="userDetails()">
+      <span class="nombre-usuario"
+        >
+        {{ nombreUsuario || 'Iniciar sesión' }}
+      </span>
+      <img
+        :src="profile_pic || '/usuario.png'"
+        alt="usuario"
+        class="w-[2.5rem] h-[2.5rem] rounded-full"
+      />
+    </div>
 
-  <!-- <div class="menu">
-        <span class="nombre-usuario">
-  {{ nombreUsuario || 'Iniciar sesión' }}
-</span>
-        <img src="/usuario.png" alt="usurio" class="usuario-img" />
-    </div> -->
+      <!-- <div class="menu">
+            <span class="nombre-usuario">
+      {{ nombreUsuario || 'Iniciar sesión' }}
+    </span>
+            <img src="/usuario.png" alt="usurio" class="usuario-img" />
+        </div> -->
   </nav>
 
   
@@ -53,6 +54,11 @@ const router = useRouter()
 
 function goToHome() {
   router.push('/home')
+}
+
+function userDetails() {
+  const url = router.resolve(`/user/${localStorage.getItem('mail')}`).href
+  router.push(url)
 }
 
 nombreUsuario.value = localStorage.getItem('name')
