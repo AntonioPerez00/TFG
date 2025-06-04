@@ -38,7 +38,7 @@
                 Vendidos
                 </button>
             </div>
-            <div class="pl-[1.5rem]">
+            <div class="">
                 <EnVenta v-if="activeTab === 'EnVenta'"/>
                 <Vendidos v-else/>
             </div>

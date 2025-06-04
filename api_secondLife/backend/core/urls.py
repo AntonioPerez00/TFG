@@ -1,11 +1,13 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import ProductViewSet, get_categories, get_product_states, register_user, login_user, logout_user, verify_email_code
+from .views import MyProductViewSet, get_categories, get_product_states, register_user, login_user, logout_user, verify_email_code
 from .views import mark_product_sold
 
 # Definir el router
 router = DefaultRouter()
 router.register(r'products', ProductViewSet, basename='product')
+router.register(r'my-products', MyProductViewSet, basename='my-product')
 
 urlpatterns = [
     path('registro/', register_user),
