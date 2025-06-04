@@ -1,0 +1,3 @@
+<template>
+    En venta
+</template>

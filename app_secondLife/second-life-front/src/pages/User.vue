@@ -21,18 +21,42 @@
 
         </div>
 
-        <div id="products">
+        <div id="products" class="m-[5rem]">
+            <div>
+                <button
+                :class="['cursor-pointer flex-1 text-center py-2 bg-transparent pt-[10px] pb-[10px] pl-[25px] pr-[25px] mb-[30px] text-[19px] text-[#9f9a8f]', 
+                activeTab === 'EnVenta' ? 'border-t-0 border-l-0 border-r-0 border-[#FFFDF8]' : 'border-none']"
+                @click="activeTab = 'EnVenta'"
+                >
+                En venta
+                </button>
+                <button
+                :class="['cursor-pointer ml-[2rem] flex-1 text-center py-2 bg-transparent pt-[10px] pb-[10px] pl-[25px] pr-[25px] mb-[30px] text-[19px] text-[#9f9a8f]', 
+                activeTab === 'register' ? 'border-t-0 border-l-0 border-r-0 border-[#FFFDF8]' : 'border-none']"
+                @click="activeTab = 'register'"
+                >
+                Vendidos
+                </button>
+            </div>
+            <div class="pl-[1.5rem]">
+                <EnVenta v-if="activeTab === 'EnVenta'"/>
+                <Vendidos v-else @registered="switchToLogin" />
+            </div>
 
         </div>
     </div>
 </template>
 
 <script setup>
+import EnVenta from '../components/EnVenta.vue'
+import Vendidos from '../components/Vendidos.vue'
 import NavBar from '../components/NavBar.vue'
 import { ref } from 'vue'
 
 const nombreUsuario = ref('')
 const profile_pic = ref('')
+
+const activeTab = ref('EnVenta')
 
 nombreUsuario.value = localStorage.getItem('name')
 profile_pic.value = localStorage.getItem('profile_pic')
