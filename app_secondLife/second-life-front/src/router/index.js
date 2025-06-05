@@ -4,6 +4,7 @@ import HomePage from '../pages/HomePage.vue'
 import AuthView from '../pages/auth/AuthView.vue'
 import ProductDetails from '../pages/ProductDetails.vue'
 import ProductCheckout from '../pages/ProductCheckout.vue'
+import MyProductDetails from '../pages/MyProductDetails.vue'
 import User from '../pages/User.vue'
 
 const routes = [
@@ -11,6 +12,7 @@ const routes = [
   { path: '/auth', component: AuthView },
   { path: '/home', component: HomePage },
   { path: '/product/:id', component: ProductDetails },
+  { path: '/my-product/:id', component: MyProductDetails },
   { path: '/checkout/:id', component: ProductCheckout },
   { path: '/user/:mail', component: User },
 ]

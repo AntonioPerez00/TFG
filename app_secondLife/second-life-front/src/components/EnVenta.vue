@@ -5,7 +5,7 @@
       :key="producto.id"
       :producto="producto"
       class="cursor-pointer relative"
-      @click="productDetails(producto)"
+      @click="myProductDetails(producto)"
     />
   </div>
 </template>
@@ -14,14 +14,23 @@
 import { ref, onMounted } from 'vue'
 import api from '../services/api'
 import Item from '../components/Item.vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const productos = ref([])
 const loading = ref(true)
+const router = useRouter()
 
 // Por si usas filtros u otros parámetros:
 const params = {disponibility: 'en_venta'}
 
-onMounted(async () => {
+// Función opcional para manejar click
+function myProductDetails(producto) {
+  const url = router.resolve(`/my-product/${producto.id}`).href
+  window.open(url, '_blank')
+  // Aquí puedes redirigir, abrir modal, etc.
+}
+
+async function filtrarProductos(){
   try {
     const [response] = await Promise.all([
       api.get('/my-products/', { params }),
@@ -33,12 +42,10 @@ onMounted(async () => {
   } finally {
     loading.value = false
   }
-})
-
-// Función opcional para manejar click
-function productDetails(producto) {
-  console.log('Ver producto', producto)
-  // Aquí puedes redirigir, abrir modal, etc.
 }
+
+onMounted(async () => {
+  filtrarProductos();
+});
 
 </script>
