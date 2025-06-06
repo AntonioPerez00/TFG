@@ -5,7 +5,6 @@
       :key="producto.id"
       :producto="producto"
       class="cursor-pointer relative"
-      @click="myProductDetails(producto)"
     />
   </div>
 </template>

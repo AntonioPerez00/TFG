@@ -5,7 +5,7 @@
   <div class="w-full bg-[#FFFDF8] flex justify-center">
     <!-- El contenido tiene ancho máximo fijo y se ajusta centrado -->
     <div id="centro" class="w-full max-w-[55rem] mt-[10rem] flex flex-col mr-[4rem] mb-[5rem]">
-      <h1 class="text-2xl font-semibold mb-[1.5rem]">Editar producto</h1>
+      <h1 class="text-2xl font-semibold mb-[1.5rem]">Subir producto</h1>
 
       <div class="w-full bg-[#FFFFFF] shadow-[0_2px_4px_rgba(0,0,0,0.1)] p-[1.7rem] rounded-[1rem] flex flex-col mb-[4rem] gap-[2rem]">
         <div class="flex flex-row items-center justify-center gap-[1rem]">

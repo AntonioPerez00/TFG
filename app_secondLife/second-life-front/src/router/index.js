@@ -1,6 +1,7 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '../pages/HomePage.vue'
+import UploadProduct from '../pages/UploadProduct.vue'
 import AuthView from '../pages/auth/AuthView.vue'
 import ProductDetails from '../pages/ProductDetails.vue'
 import ProductCheckout from '../pages/ProductCheckout.vue'
@@ -15,6 +16,7 @@ const routes = [
   { path: '/my-product/:id', component: MyProductDetails },
   { path: '/checkout/:id', component: ProductCheckout },
   { path: '/user/:mail', component: User },
+  { path: '/upload-product', component: UploadProduct },
 ]
 
 const router = createRouter({

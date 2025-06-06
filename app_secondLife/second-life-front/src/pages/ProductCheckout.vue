@@ -36,7 +36,7 @@
                 v-model="nombre"
                 placeholder="Nombre del comprador"
                 required
-                class="flex-1 border-0 border-b border-b-[#9f9a8f] p-[3px] text-[#9f9a8f] text-[1rem] bg-[#FFFDF8] focus:outline-none placeholder-[#9f9a8f]"
+                class="flex-1 border-0 border-b border-b-[#9f9a8f] p-[3px] text-[#9f9a8f] text-[1rem] bg-transparent focus:outline-none placeholder-[#9f9a8f]"
               />
             </div>
 
@@ -46,7 +46,7 @@
                 v-model="direccion"
                 placeholder="Dirección a la que llegará el producto"
                 required
-                class="flex-1 border-0 border-b border-b-[#9f9a8f] p-[3px] text-[#9f9a8f] text-[1rem] bg-[#FFFDF8] focus:outline-none placeholder-[#9f9a8f]"
+                class="flex-1 border-0 border-b border-b-[#9f9a8f] p-[3px] text-[#9f9a8f] text-[1rem] bg-transparent focus:outline-none placeholder-[#9f9a8f]"
               />
             </div>
 
@@ -56,7 +56,7 @@
                 v-model="piso"
                 placeholder="Nombre del comprador"
                 required
-                class="flex-1 border-0 border-b border-b-[#9f9a8f] p-[3px] text-[#9f9a8f] text-[1rem] bg-[#FFFDF8] focus:outline-none placeholder-[#9f9a8f]"
+                class="flex-1 border-0 border-b border-b-[#9f9a8f] p-[3px] text-[#9f9a8f] text-[1rem] bg-transparent focus:outline-none placeholder-[#9f9a8f]"
               />
             </div>
           </div>
