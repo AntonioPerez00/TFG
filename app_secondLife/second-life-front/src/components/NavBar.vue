@@ -71,6 +71,26 @@ let lastScrollY = window.scrollY // Guarda la posición previa del scroll
 const router = useRouter()
 const dropdownVisible = ref(false)
 
+async function cerrarSesion() {
+  dropdownVisible.value = false
+
+  
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('refresh_token')
+      localStorage.removeItem('name')
+      localStorage.removeItem('mail')
+      localStorage.removeItem('profile_pic')
+
+       // Actualiza los valores reactivos
+  nombreUsuario.value = ''
+  profile_pic.value = ''
+
+  // Redirige al usuario si lo deseas (opcional)
+  router.push('/home')  // o cualquier ruta pública, como '/login'
+
+}
+
+
 function toggleDropdown() {
   dropdownVisible.value = !dropdownVisible.value
 }
@@ -79,12 +99,6 @@ function goToProfile() {
   dropdownVisible.value = false
   const url = router.resolve(`/user/${localStorage.getItem('mail')}`).href
   router.push(url)
-}
-
-function cerrarSesion() {
-  dropdownVisible.value = false
-  console.log('Cerrar sesión clicado')
-  // Aquí más adelante puedes borrar tokens y hacer logout real
 }
 
 function handleClickOutside(event) {
