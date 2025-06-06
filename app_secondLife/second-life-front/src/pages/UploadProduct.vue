@@ -21,7 +21,7 @@
         <div class="flex flex-row gap-[1rem]">
           <span class="mb-0 mt-[1rem]">Descripción del producto</span>
           <textarea
-            v-model="nombre"
+            v-model="descripcion"
             placeholder="Le quiero dar una segunda vida por que..."
             required
             class="flex-1 h-[6rem] border border-[#9f9a8f] rounded-[1rem] p-[0.75rem] text-[#9f9a8f] text-[1rem] bg-transparent focus:outline-none placeholder-[#9f9a8f]"
@@ -71,7 +71,8 @@
       <div class="w-full bg-[#FFFFFF] shadow-[0_2px_4px_rgba(0,0,0,0.1)] p-[1.7rem] rounded-[1rem] flex flex-col mb-[4rem] gap-[2rem]">
         <div class="flex flex-row items-center justify-center gap-[1rem]">
           <span class="mb-0">Categoría</span>
-          <select class="select_category">
+          <select class="select_category" v-model="categoriaSeleccionada">
+            <option disabled value="">Selecciona categoría</option>
             <option v-for="cat in categorias" :key="cat.id" :value="cat.id">
               {{ cat.name }}
             </option>
@@ -83,7 +84,8 @@
       <div class="w-full bg-[#FFFFFF] shadow-[0_2px_4px_rgba(0,0,0,0.1)] p-[1.7rem] rounded-[1rem] flex flex-col mb-[4rem] gap-[2rem]">
         <div class="flex flex-row items-center justify-center gap-[1rem]">
           <span class="mb-0">Estado</span>
-          <select class="select_category">
+          <select v-model="estadoSeleccionado" class="select_category">
+            <option disabled value="">Selecciona estado</option>
             <option v-for="estado in estados">
               {{ estado.value }}
             </option>
@@ -96,7 +98,7 @@
         <div class="flex flex-row items-center justify-center gap-[1rem]">
           <span class="mb-0">Precio</span>
           <input
-            v-model="nombre"
+            v-model="precio"
             placeholder="Pon un precio razonable..."
             required
             class="flex-1 border-0 border-b border-b-[#9f9a8f] p-[3px] text-[#9f9a8f] text-[1rem] bg-transparent focus:outline-none placeholder-[#9f9a8f]"
@@ -106,12 +108,13 @@
       </div>
 
       <button
-            @click="checkout(producto)"
-            :disabled="comprando"
-            class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] text-[15px] cursor-pointer pt-[0.5rem] pb-[0.5rem] w-fit pl-[3rem] pr-[3rem] disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {{ comprando ? 'Procesando...' : 'Subir' }}
-          </button>
+        @click="checkout"
+        :disabled="comprando || !nombre.trim() || !imagenes[0] || !categoriaSeleccionada || !estadoSeleccionado || !precio || isNaN(Number(precio)) || Number(precio) <= 0"
+        class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] text-[15px] cursor-pointer pt-[0.5rem] pb-[0.5rem] w-fit pl-[3rem] pr-[3rem] disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {{ comprando ? 'Procesando...' : 'Subir' }}
+      </button>
+
 
     </div>
   </div>
@@ -139,6 +142,80 @@ const estados = ref([])
 
 const imagenes = ref([null, null, null, null, null]) // Para guardar archivos
 const previews = ref([null, null, null, null, null]) // Para mostrar imágenes
+
+const nombre = ref('')
+const descripcion = ref('')
+const categoriaSeleccionada = ref(null)
+const estadoSeleccionado = ref(null)
+const precio = ref('')
+
+// Función para subir el producto
+const comprando = ref(false)
+
+async function checkout() {
+  if (comprando.value) return // evita doble click
+
+  // Validaciones obligatorias
+  if (!nombre.value.trim()) {
+    alert('El título del anuncio es obligatorio.')
+    return
+  }
+
+  if (!imagenes.value[0]) {
+    alert('Debes subir al menos una imagen principal.')
+    return
+  }
+
+  if (!categoriaSeleccionada.value) {
+    alert('Selecciona una categoría.')
+    return
+  }
+
+  if (!estadoSeleccionado.value) {
+    alert('Selecciona un estado.')
+    return
+  }
+
+  if (!precio.value || isNaN(Number(precio.value)) || Number(precio.value) <= 0) {
+    alert('Introduce un precio válido mayor que cero.')
+    return
+  }
+
+  comprando.value = true
+
+  try {
+    const formData = new FormData()
+    formData.append('name', nombre.value)
+    formData.append('description', descripcion.value || '') // opcional
+
+    formData.append('category', categoriaSeleccionada.value)
+    formData.append('state', estadoSeleccionado.value)
+    formData.append('price', precio.value)
+    formData.append('disponibility', 'en_venta') 
+
+    imagenes.value.forEach((file, index) => {
+      if (file) {
+        formData.append(`picture${index + 1}`, file)
+      }
+    })
+
+    const res = await api.post('/products/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+
+    console.log('Producto subido:', res.data)
+    router.push('/home')
+
+  } catch (error) {
+    console.error('Error al subir producto:', error)
+    alert('Error al subir el producto. Intenta de nuevo.')
+  } finally {
+    comprando.value = false
+  }
+}
+
 
 function handleImageUpload(event, index) {
   const file = event.target.files[0]
