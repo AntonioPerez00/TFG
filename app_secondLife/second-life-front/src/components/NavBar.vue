@@ -16,9 +16,8 @@
       <button class="search-button" @click="handleSearch">Buscar</button>
     </div>
 
-    <div class="menu" @click="userDetails()">
-      <span class="nombre-usuario"
-        >
+    <div class="relative menu menu" @click="toggleDropdown">
+      <span class="nombre-usuario">
         {{ nombreUsuario || 'Iniciar sesión' }}
       </span>
       <img
@@ -26,6 +25,25 @@
         alt="usuario"
         class="w-[2.5rem] h-[2.5rem] rounded-full"
       />
+      <div
+        v-if="dropdownVisible"
+        class="absolute mt-[8rem] w-40 bg-[#FFFFFF] shadow-lg z-50 pl-[1rem] pr-[1rem] rounded-[1rem] shadow-[0_2px_4px_rgba(0,0,0,0.1)] z-[9999]"
+      >
+        
+          <p
+            class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+            @click.stop="goToProfile"
+          >
+            Mi perfil
+          </p>
+          <p
+            class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+            @click.stop="cerrarSesion"
+          >
+            Cerrar sesión
+          </p>
+        
+      </div>
     </div>
 
       <!-- <div class="menu">
@@ -51,6 +69,30 @@ const nombreUsuario = ref('')
 const profile_pic = ref('')
 let lastScrollY = window.scrollY // Guarda la posición previa del scroll
 const router = useRouter()
+const dropdownVisible = ref(false)
+
+function toggleDropdown() {
+  dropdownVisible.value = !dropdownVisible.value
+}
+
+function goToProfile() {
+  dropdownVisible.value = false
+  const url = router.resolve(`/user/${localStorage.getItem('mail')}`).href
+  router.push(url)
+}
+
+function cerrarSesion() {
+  dropdownVisible.value = false
+  console.log('Cerrar sesión clicado')
+  // Aquí más adelante puedes borrar tokens y hacer logout real
+}
+
+function handleClickOutside(event) {
+  const menuElement = document.querySelector('.menu')
+  if (menuElement && !menuElement.contains(event.target)) {
+    dropdownVisible.value = false
+  }
+}
 
 function goToHome() {
   router.push('/home')
@@ -72,9 +114,12 @@ function handleScroll() {
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
+    window.addEventListener('click', handleClickOutside)
 })
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
+    window.removeEventListener('click', handleClickOutside)
+
 })
 
 const emit = defineEmits(['buscar'])
@@ -168,7 +213,6 @@ function handleSearch() {
   align-items: center;
   cursor: pointer;
   padding: 6px;
-  z-index: 1;
   margin-left: auto; /* empuja a la derecha */
 }
 
