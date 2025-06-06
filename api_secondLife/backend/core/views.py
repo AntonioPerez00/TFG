@@ -29,6 +29,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from rest_framework.pagination import PageNumberPagination
 
 
 # Se hacen de forma diferente al tener que utilizar campos diferentes a los de los usuarios de django
@@ -121,9 +122,14 @@ def logout_user(request):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+
+class ProductPagination(PageNumberPagination):
+    page_size = 20  # 20 productos por página
+    page_size_query_param = 'page_size'
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+    pagination_class = ProductPagination  # 👈 Añade esto
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
 
     filterset_fields = {

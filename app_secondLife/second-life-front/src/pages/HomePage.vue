@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import api from '../services/api'
 import NavBar from '../components/NavBar.vue'
 import Filtros from '../components/FilterBar.vue'
@@ -41,6 +41,9 @@ const authStore = useAuthStore()
 const router = useRouter()
 const route = useRoute()
 
+const pagina = ref(1)
+const finDeResultados = ref(false)
+
 function productDetails(producto) {
   const url = router.resolve(`/product/${producto.id}`).href
   window.open(url, '_blank')
@@ -52,7 +55,8 @@ const loading = ref(false)
 const busquedaActual = ref('')
 const filtrosActivos = ref({})
 
-async function filtrarProductos(busqueda = '', filtros = {}) {
+async function filtrarProductos(busqueda = '', filtros = {}, cargarMas = false) {
+  if (loading.value || finDeResultados.value) return
   loading.value = true
 
   const params = {
@@ -62,28 +66,40 @@ async function filtrarProductos(busqueda = '', filtros = {}) {
     price__gte: filtros.precioDesde,
     price__lte: filtros.precioHasta,
     ordering: filtros.orden,
+    page: pagina.value,
   }
 
-  // para limpiar las queries vacías y que no aparezcan
   const queryParams = Object.fromEntries(
     Object.entries(params).filter(([_, v]) => v !== '' && v !== undefined)
   )
 
-  router.replace({ path: '/home', query: queryParams })
-
+  if (!cargarMas) {
+    productos.value = []
+    pagina.value = 1
+    finDeResultados.value = false
+  }
 
   try {
-    const [response] = await Promise.all([
-      api.get('/products/', { params }),
-      new Promise(resolve => setTimeout(resolve, 200)) // spinner delay
-    ])
-    productos.value = response.data
+    const response = await api.get('/products/', { params })
+
+    const nuevosProductos = response.data.results || response.data  // por si no se devuelve en .results
+    if (nuevosProductos.length === 0) {
+      finDeResultados.value = true
+    } else {
+      if (cargarMas) {
+        productos.value.push(...nuevosProductos)
+      } else {
+        productos.value = nuevosProductos
+      }
+      pagina.value += 1
+    }
   } catch (error) {
     console.error('Error al cargar productos:', error)
   } finally {
     loading.value = false
   }
 }
+
 
 // Estas funciones se ejecutan al recibir los emits:
 function actualizarBusqueda(nuevaBusqueda) {
@@ -110,7 +126,12 @@ onMounted(() => {
 
   busquedaActual.value = query.search || ''
 
+  window.addEventListener('scroll', handleScroll)
   filtrarProductos(busquedaActual.value, filtrosActivos.value)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
 })
 
 watch(() => route.query, (nuevaQuery) => {
@@ -125,6 +146,13 @@ watch(() => route.query, (nuevaQuery) => {
   busquedaActual.value = nuevaQuery.search || ''
   filtrarProductos(busquedaActual.value, filtrosActivos.value)
 })
+
+function handleScroll() {
+  const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 300
+  if (nearBottom && !loading.value && !finDeResultados.value) {
+    filtrarProductos(busquedaActual.value, filtrosActivos.value, true)
+  }
+}
 
 </script>
 
