@@ -110,7 +110,7 @@
       <button
         @click="checkout"
         :disabled="comprando || !nombre.trim() || !imagenes[0] || !categoriaSeleccionada || !estadoSeleccionado || !precio || isNaN(Number(precio)) || Number(precio) <= 0"
-        class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] text-[15px] cursor-pointer pt-[0.5rem] pb-[0.5rem] w-fit pl-[3rem] pr-[3rem] disabled:opacity-50 disabled:cursor-not-allowed"
+        class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] text-[15px] cursor-pointer pt-[0.5rem] pb-[0.5rem] w-fit pl-[3rem] pr-[3rem] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#217d86]"
       >
         {{ comprando ? 'Procesando...' : 'Subir' }}
       </button>

@@ -62,11 +62,11 @@
     </details>
 
     <div class="mt-[2rem] p-0 flex">
-      <button @click="aplicarFiltros" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[15px] cursor-pointer">
+      <button @click="aplicarFiltros" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[15px] cursor-pointer hover:bg-[#217d86]">
         Filtrar
       </button>
 
-      <button @click="resetFiltros" class="bg-[#EC7753] border-none text-[#FFFFFF] rounded-full text-[15px] w-[2.5rem] h-[2.5rem] ml-[1rem] cursor-pointer">
+      <button @click="resetFiltros" class="bg-[#EC7753] border-none text-[#FFFFFF] rounded-full text-[15px] w-[2.5rem] h-[2.5rem] ml-[1rem] cursor-pointer  hover:bg-[#d96443]">
         <img src="../assets/papelera.png" alt="papelera" class="w-[1.5rem] h-[1.5rem]">
       </button>
     </div>

@@ -51,7 +51,7 @@
       <button
         type="submit"
         :disabled="passwordMismatch"
-        class="bg-[#299CA9] disabled:opacity-50 pointer-cursor border-none text-[#FFFFFF] rounded-[10px] mt-[2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[19px]"
+        class="bg-[#299CA9] disabled:opacity-50 pointer-cursor border-none text-[#FFFFFF] rounded-[10px] mt-[2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[19px] cursor-pointer hover:bg-[#217d86]"
       >
         Continuar
       </button>
@@ -60,7 +60,7 @@
 
     <template v-else>
       <input v-model="code" type="text" placeholder="Código de verificación" required class="border-0 border-b border-b-[#9f9a8f] p-[3px] mb-[25px] text-[#9f9a8f] text-[18px] bg-[#FFFDF8] focus:outline-none placeholder-[#9f9a8f]"/>
-      <button @click.prevent="verifyCode" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[10px] mt-[2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[19px]">Verificar código</button>
+      <button @click.prevent="verifyCode" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[10px] mt-[2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[19px]  cursor-pointer hover:bg-[#217d86]">Verificar código</button>
     </template>
   </form>
 </template>

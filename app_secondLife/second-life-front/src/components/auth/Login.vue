@@ -30,7 +30,7 @@
 
     </div>
     <p v-if="error" id="error" class="text-[#CC6565]">{{ error }}</p>
-    <button type="submit" class="bg-[#299CA9] cursor-pointer border-none text-[#FFFFFF] rounded-[10px] mt-[2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[19px]">
+    <button type="submit" class="bg-[#299CA9] cursor-pointer border-none text-[#FFFFFF] rounded-[10px] mt-[2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[19px] hover:bg-[#217d86]">
       Iniciar sesión
     </button>
   </form>

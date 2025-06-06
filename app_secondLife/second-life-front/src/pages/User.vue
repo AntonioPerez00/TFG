@@ -16,7 +16,7 @@
                 </span>
             </div>
 
-            <button @click="uploadProduct()" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] text-[15px] cursor-pointer pt-[0.5rem] pb-[0.5rem] w-fit pl-[1rem] pr-[1rem] right-[0rem]">
+            <button @click="uploadProduct()" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] text-[15px] cursor-pointer pt-[0.5rem] pb-[0.5rem] w-fit pl-[1rem] pr-[1rem] right-[0rem] hover:bg-[#217d86]">
             Subir producto
             </button>
 
