@@ -16,7 +16,7 @@
       <button class="search-button" @click="handleSearch">Buscar</button>
     </div>
 
-    <div class="relative menu menu" @click="toggleDropdown">
+    <div class="relative menu menu" @click="handleMenuClick">
       <span class="nombre-usuario">
         {{ nombreUsuario || 'Iniciar sesión' }}
       </span>
@@ -89,6 +89,15 @@ async function cerrarSesion() {
   router.push('/home')  // o cualquier ruta pública, como '/login'
 
 }
+
+function handleMenuClick() {
+  if (!nombreUsuario.value) {
+    router.push('/auth')
+  } else {
+    toggleDropdown()
+  }
+}
+
 
 
 function toggleDropdown() {
