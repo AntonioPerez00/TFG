@@ -50,10 +50,10 @@
       <p v-if="passwordMismatch" class="text-red-600 text-sm mb-[20px]">Las contraseñas no coinciden.</p>
       <button
         type="submit"
-        :disabled="passwordMismatch"
+        :disabled="passwordMismatch || registrando"
         class="bg-[#299CA9] disabled:opacity-50 pointer-cursor border-none text-[#FFFFFF] rounded-[10px] mt-[2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[19px] cursor-pointer hover:bg-[#217d86]"
       >
-        Continuar
+         {{ registrando ? 'Procesando...' : 'Continuar' }}
       </button>
 
     </template>
@@ -78,10 +78,13 @@ const isCodeStep = ref(false)
 const code = ref('')
 const confirmPassword = ref('')
 const passwordMismatch = ref(false)
+const registrando = ref(false)
 
 const emit = defineEmits(['registered'])
 
 async function onSubmit() {
+  registrando.value = true // ← Activar "Procesando..." antes de la petición
+
   try {
     const response = await fetch('http://localhost:8000/api/registro/', {
       method: 'POST',
@@ -96,24 +99,26 @@ async function onSubmit() {
     })
 
     if (!response.ok) {
-  const errorData = await response.json()
+      const errorData = await response.json()
 
-  const messages = Object.values(errorData)
-    .flat()
-    .join('\n') // Para mostrar múltiples errores si los hay
+      const messages = Object.values(errorData)
+        .flat()
+        .join('\n')
 
-  alert(`Error en el registro:\n${messages}`)
-  return
-}
-
+      alert(`Error en el registro:\n${messages}`)
+      return // no pongas aquí registrando = false, lo haremos en finally
+    }
 
     alert('Usuario registrado. Revisa tu correo para activarlo.')
-    isCodeStep.value = true // ← Cambia al paso del código
+    isCodeStep.value = true
   } catch (error) {
     console.error('Error:', error)
     alert('Error de red al registrar.')
+  } finally {
+    registrando.value = false // ← Siempre desactiva "Procesando..." al final
   }
 }
+
 
 async function verifyCode() {
   try {
