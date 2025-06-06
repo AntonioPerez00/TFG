@@ -178,18 +178,62 @@ class MyProductViewSet(viewsets.ModelViewSet):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def mark_product_sold(request, product_id):
-    user = request.user
+    user = request.user  # comprador
     product = get_object_or_404(Product, id=product_id)
+    vendedor = product.user
 
-    # Opcional: comprobar que el usuario no sea el dueño (si es necesario)
-    if product.user == user:
+    if vendedor == user:
         return Response({"error": "No puedes comprar tu propio producto"}, status=400)
 
-    # Cambiar estado a vendido
     product.disponibility = 'vendido'
     product.save()
-    
-    return Response({"mensaje": "Producto marcado como vendido"})
+
+    # Datos de la transacción
+    producto_nombre = product.name
+    precio = product.price
+    direccion = vendedor.location or "No especificada"
+    comprador_mail = user.mail
+    vendedor_mail = vendedor.mail
+
+    # Email al comprador
+    send_mail(
+        subject='Confirmación de compra',
+        message=f"""
+Hola {user.name},
+
+Has comprado el producto: {producto_nombre}
+Precio: {precio}€
+Dirección de recogida/envío: {direccion}
+
+Por favor, ponte en contacto con el vendedor para más detalles.
+
+Gracias por usar SecondLife!
+""",
+        from_email='a.secondlifeteam@gmail.com',
+        recipient_list=[comprador_mail],
+        fail_silently=False,
+    )
+
+    # Email al vendedor
+    send_mail(
+        subject='Has vendido un producto',
+        message=f"""
+Hola {vendedor.name},
+
+Has vendido el producto: {producto_nombre}
+Precio: {precio}€
+Comprador: {user.name} ({comprador_mail})
+
+Te recomendamos ponerte en contacto para acordar la entrega.
+
+Gracias por usar SecondLife!
+""",
+        from_email='a.secondlifeteam@gmail.com',
+        recipient_list=[vendedor_mail],
+        fail_silently=False,
+    )
+
+    return Response({"mensaje": "Producto marcado como vendido y correos enviados"})
 
 
 @api_view(['GET'])

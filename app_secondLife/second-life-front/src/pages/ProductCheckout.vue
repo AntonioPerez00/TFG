@@ -107,9 +107,14 @@
             <span>{{ total }} €</span>
           </div>
 
-          <button @click="checkout(producto)" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] text-[15px] cursor-pointer pt-[0.5rem] pb-[0.5rem] w-fit pl-[3rem] pr-[3rem]">
-          Pagar
-          </button>
+          <button
+  @click="checkout(producto)"
+  :disabled="comprando"
+  class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] text-[15px] cursor-pointer pt-[0.5rem] pb-[0.5rem] w-fit pl-[3rem] pr-[3rem] disabled:opacity-50 disabled:cursor-not-allowed"
+>
+  {{ comprando ? 'Procesando...' : 'Pagar' }}
+</button>
+
         </div>
         
 
@@ -128,6 +133,7 @@ import NavBar from '../components/NavBar.vue'
 import { nextTick } from 'vue'
 import router from '../router'
 
+const comprando = ref(false)
 const route = useRoute()
 const tipoEntrega = ref('en_persona')
 const precioEnvio = ref(0)
@@ -177,20 +183,23 @@ onMounted(async () => {
 })
 
 const checkout = async (producto) => {
-  // Compruebo de nuevo que si ha puesto la direccion habiendo elegido esa opcion
   if (tipoEntrega.value === 'direccion' && !direccionCompleta.value) {
     alert('Debes completar todos los campos de dirección.')
     return
   }
 
-  try{
+  comprando.value = true
+
+  try {
     const res = await api.post(`/products/${producto.id}/mark_sold/`)
     alert("Compra realizada con éxito")
     router.push('/home')
   } catch (error) {
     console.error('Error al marcar como vendido: ', error)
     alert('Hubo un error al procesar la compra. Intenta de nuevo.')
+    comprando.value = false
   }
 }
+
 
 </script>
