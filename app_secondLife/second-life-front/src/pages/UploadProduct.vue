@@ -34,46 +34,36 @@
         <span class="mb-[1rem]">Sube hasta 5 fotos</span>
         <div class="w-5rem bg-[#FFFFFF] shadow-[0_2px_4px_rgba(0,0,0,0.1)] p-[1.7rem] rounded-[1rem] flex flex-row gap-[4rem]">
 
-          <div class="border p-[1rem] rounded-[1rem] w-[5rem] h-[7rem] flex items-center justify-center cursor-pointer">
-            <img
-              :src="'/galeria-de-imagenes.png'"
-              alt="producto"
-              class="w-[2rem] h-[3rem] rounded-[0.75rem]"
-            />
-          </div>
+          <div class="flex flex-row gap-[4rem]">
+            <div
+              v-for="(preview, index) in previews"
+              :key="index"
+              class="border rounded-[1rem] w-[7rem] h-[9rem] flex items-center justify-center cursor-pointer relative overflow-hidden"
+              @click="fileInputs[index]?.click()"
+            >
+              <input
+                type="file"
+                accept="image/*"
+                class="hidden"
+                :ref="el => fileInputs[index] = el"
+                @change="event => handleImageUpload(event, index)"
+              />
+              <img
+                v-if="preview"
+                :src="preview"
+                alt="Imagen subida"
+                class="w-full h-full object-cover"
+              />
+              <img
+                v-else
+                src="/galeria-de-imagenes.png"
+                alt="placeholder"
+                class="w-[2rem] h-[3rem] rounded-[0.75rem] p-[1rem]"
+              />
+            </div>
+</div>
 
-          <div class="border p-[1rem] rounded-[1rem] w-[5rem] h-[7rem] flex items-center justify-center  cursor-pointer">
-            <img
-              :src="'/galeria-de-imagenes.png'"
-              alt="producto"
-              class="w-[2rem] h-[3rem] rounded-[0.75rem]"
-            />
-          </div>
 
-          <div class="border p-[1rem] rounded-[1rem] w-[5rem] h-[7rem] flex items-center justify-center  cursor-pointer">
-            <img
-              :src="'/galeria-de-imagenes.png'"
-              alt="producto"
-              class="w-[2rem] h-[3rem] rounded-[0.75rem]"
-            />
-          </div>
-
-          <div class="border p-[1rem] rounded-[1rem] w-[5rem] h-[7rem] flex items-center justify-center  cursor-pointer">
-            <img
-              :src="'/galeria-de-imagenes.png'"
-              alt="producto"
-              class="w-[2rem] h-[3rem] rounded-[0.75rem]"
-            />
-          </div>
-
-          <div class="border p-[1rem] rounded-[1rem] w-[5rem] h-[7rem] flex items-center justify-center  cursor-pointer">
-            <img
-              :src="'/galeria-de-imagenes.png'"
-              alt="producto"
-              class="w-[2rem] h-[3rem] rounded-[0.75rem]"
-            />
-          </div>
-          
         </div>
         
       </div>
@@ -115,6 +105,14 @@
 
       </div>
 
+      <button
+            @click="checkout(producto)"
+            :disabled="comprando"
+            class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] text-[15px] cursor-pointer pt-[0.5rem] pb-[0.5rem] w-fit pl-[3rem] pr-[3rem] disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {{ comprando ? 'Procesando...' : 'Subir' }}
+          </button>
+
     </div>
   </div>
 
@@ -138,6 +136,19 @@ const route = useRoute()
 
 const categorias = ref([])
 const estados = ref([])
+
+const imagenes = ref([null, null, null, null, null]) // Para guardar archivos
+const previews = ref([null, null, null, null, null]) // Para mostrar imágenes
+
+function handleImageUpload(event, index) {
+  const file = event.target.files[0]
+  if (file) {
+    imagenes.value[index] = file
+    previews.value[index] = URL.createObjectURL(file)
+  }
+}
+
+const fileInputs = [] // Guardamos refs de inputs
 
 
 async function fetchFiltrosOptions() {
