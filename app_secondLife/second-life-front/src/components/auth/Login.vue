@@ -95,7 +95,9 @@ async function login() {
     localStorage.setItem('name', data.name)
     localStorage.setItem('mail', data.mail)
     localStorage.setItem('profile_pic', data.profile_pic)
-
+    localStorage.setItem('location', data.location)
+    localStorage.setItem('profile_desc', data.profile_desc)
+    
     emit('authenticated')
   } catch (err) {
     error.value = 'Error de conexión'

@@ -14,6 +14,11 @@
                 <span class="text-[1.5rem] ml-[1.5rem]">
                     {{ nombreUsuario || 'Iniciar sesión' }}
                 </span>
+
+                <img 
+                src="/editar.png" alt="editar"
+                class="w-[1.5rem] ml-[1rem] rounded-full p-[0.5rem] hover:bg-[#E5E7EB] cursor-pointer" 
+                @click="edit">
             </div>
 
             <button @click="uploadProduct()" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] text-[15px] cursor-pointer pt-[0.5rem] pb-[0.5rem] w-fit pl-[1rem] pr-[1rem] right-[0rem] hover:bg-[#217d86]">
@@ -68,6 +73,10 @@ profile_pic.value = localStorage.getItem('profile_pic')
 
 function uploadProduct() {
     router.push('/upload-product/')
+}
+
+function edit() {
+  router.push(`/edit`)
 }
 
 

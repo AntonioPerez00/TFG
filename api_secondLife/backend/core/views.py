@@ -107,6 +107,8 @@ def login_user(request):
             'mail': user.mail,
             'name': user.name,
             'profile_pic': profile_pic_url,
+            'profile_desc': user.profile_desc,
+            'location': user.location,
         })
     return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
 
