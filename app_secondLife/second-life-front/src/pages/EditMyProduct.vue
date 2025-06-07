@@ -109,7 +109,7 @@
 
       <button
         @click="checkout"
-        :disabled="comprando || !nombre.trim() || !imagenes[0] || !categoriaSeleccionada || !estadoSeleccionado || !precio || isNaN(Number(precio)) || Number(precio) <= 0"
+:disabled="comprando || !nombre.trim() || (!imagenes[0] && !previews[0]) || !categoriaSeleccionada || !estadoSeleccionado || !precio || isNaN(Number(precio)) || Number(precio) <= 0"
         class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] text-[15px] cursor-pointer pt-[0.5rem] pb-[0.5rem] w-fit pl-[3rem] pr-[3rem] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#217d86]"
       >
         {{ comprando ? 'Procesando...' : 'Subir' }}
@@ -167,7 +167,15 @@ async function fetchProduct() {
     precio.value = product.price
 
     // Suponiendo que product.pictures es un array de URLs
-    previews.value = product.pictures || [null, null, null, null, null]
+    const baseUrl = 'http://localhost:8000'
+
+const pics = []
+for (let i = 1; i <= 5; i++) {
+  const picUrl = product[`picture${i}`]
+  pics.push(picUrl ? picUrl : null)
+}
+previews.value = pics
+
 
     // Como no puedes cargar archivos directamente, deja imágenes vacías y usa solo previews para mostrar
     imagenes.value = [null, null, null, null, null]
@@ -193,10 +201,10 @@ async function checkout() {
     return
   }
 
-  if (!imagenes.value[0]) {
-    alert('Debes subir al menos una imagen principal.')
-    return
-  }
+  if (!imagenes.value[0] && !previews.value[0]) {
+  alert('Debes subir al menos una imagen principal.')
+  return
+}
 
   if (!categoriaSeleccionada.value) {
     alert('Selecciona una categoría.')
@@ -216,6 +224,12 @@ async function checkout() {
   comprando.value = true
 
   try {
+
+     const token = localStorage.getItem('access_token')
+  if (!token) {
+    alert('No estás autenticado')
+    return
+  }
     const formData = new FormData()
     formData.append('name', nombre.value)
     formData.append('description', descripcion.value || '') // opcional
@@ -231,14 +245,15 @@ async function checkout() {
       }
     })
 
-    const res = await api.post('/products/', formData, {
+    const res = await api.put(`/my-products/${productId}/`, formData, {
       headers: {
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'multipart/form-data',
       },
     })
 
-    console.log('Producto subido:', res.data)
-    router.push('/home')
+    alert('Producto actualizado con éxito')
+    router.push('/user/' + localStorage.getItem('mail'))
 
   } catch (error) {
     console.error('Error al subir producto:', error)
@@ -275,15 +290,17 @@ async function fetchFiltrosOptions() {
 
 const loading = ref(false)
 
-onMounted(() => {
-  fetchFiltrosOptions()
-  fetchProduct()
-  
+onMounted(async () => {
+  await fetchFiltrosOptions()
+  await fetchProduct()  // Esperamos que termine la carga del producto
+
+  console.log(previews.value[0])  // Aquí sí estará cargada la URL correcta
+
   loading.value = true
 
   setTimeout(() => {
     loading.value = false
-  }, 300) // puedes ajustar la duración
+  }, 300)
 })
 
 

@@ -206,7 +206,7 @@ async function checkout() {
     })
 
     console.log('Producto subido:', res.data)
-    router.push('/home')
+    router.push('/user/' + localStorage.getItem('mail'))
 
   } catch (error) {
     console.error('Error al subir producto:', error)
