@@ -135,7 +135,10 @@ const imgs = computed(() => {
 
 
 function edit(producto) {
-  router.push(`/editProduct/${producto.id}`)
+  router.push({
+    path: `/editProduct/${producto.id}`,
+    state: { producto }  // aquí pasas el objeto producto completo
+  })
 }
 
 function prevImage() {

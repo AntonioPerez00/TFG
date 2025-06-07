@@ -148,6 +148,38 @@ const descripcion = ref('')
 const categoriaSeleccionada = ref(null)
 const estadoSeleccionado = ref(null)
 const precio = ref('')
+const productId = route.params.id
+
+console.log(productId)
+
+async function fetchProduct() {
+  if (!productId) return
+
+  loading.value = true
+  try {
+    const res = await api.get(`/my-products/${route.params.id}/`)
+    const product = res.data
+
+    nombre.value = product.name
+    descripcion.value = product.description || ''
+    categoriaSeleccionada.value = product.category
+    estadoSeleccionado.value = product.state
+    precio.value = product.price
+
+    // Suponiendo que product.pictures es un array de URLs
+    previews.value = product.pictures || [null, null, null, null, null]
+
+    // Como no puedes cargar archivos directamente, deja imágenes vacías y usa solo previews para mostrar
+    imagenes.value = [null, null, null, null, null]
+
+  } catch (error) {
+    console.error('Error al cargar producto:', error)
+    alert('No se pudo cargar el producto.')
+  } finally {
+    loading.value = false
+  }
+}
+
 
 // Función para subir el producto
 const comprando = ref(false)
@@ -227,7 +259,7 @@ function handleImageUpload(event, index) {
 
 const fileInputs = [] // Guardamos refs de inputs
 
-
+// Aunque se llame así es para cargar los selects
 async function fetchFiltrosOptions() {
   try {
     const [resCategorias, resEstados] = await Promise.all([
@@ -245,7 +277,8 @@ const loading = ref(false)
 
 onMounted(() => {
   fetchFiltrosOptions()
-
+  fetchProduct()
+  
   loading.value = true
 
   setTimeout(() => {
