@@ -53,6 +53,7 @@
         <button
           type="button"
           class="bg-[#299CA9] text-[#FFFFFF] border-none cursor-pointer py-[0.8rem] rounded-[1rem] text-[1rem] hover:bg-[#217d86] transition-colors"
+          @click="guardarCambios"
         >
           Guardar cambios
         </button>
@@ -64,8 +65,8 @@
 <script setup>
 import { ref } from 'vue'
 import NavBar from '../components/NavBar.vue'
+import axios from 'axios'
 
-// Método para que no devuelva un string "null"
 function safeGet(key) {
   const value = localStorage.getItem(key)
   return value === null || value === 'null' ? '' : value
@@ -75,6 +76,70 @@ const nombreUsuario = ref(safeGet('name'))
 const profile_pic = ref(safeGet('profile_pic'))
 const localizacion = ref(safeGet('location'))
 const descripcion = ref(safeGet('profile_desc'))
+
+async function guardarCambios() {
+  const token = localStorage.getItem('access_token')
+  if (!token) {
+    alert('No estás autenticado')
+    return
+  }
+
+  if (!nombreUsuario.value.trim()) {
+    alert('El nombre es obligatorio')
+    return
+  }
+
+  // Construir el objeto sólo con los campos no vacíos, excepto el nombre que es obligatorio
+  const datosActualizar = {
+    name: nombreUsuario.value.trim(),
+  }
+
+  if (localizacion.value.trim() !== '') {
+    datosActualizar.location = localizacion.value.trim()
+  }
+  if (descripcion.value.trim() !== '') {
+    datosActualizar.profile_desc = descripcion.value.trim()
+  }
+  if (profile_pic.value && profile_pic.value.trim() !== '') {
+    datosActualizar.profile_pic = profile_pic.value
+  }
+
+  try {
+    const res = await axios.put('/api/profile/', datosActualizar, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    })
+
+    alert('Perfil actualizado correctamente')
+    // Aquí podrías actualizar localStorage o refs con res.data si quieres
+
+  } catch (error) {
+    if (error.response) {
+      // Mostrar mensaje más legible si viene en data.detail o data.message o data.errors
+      const data = error.response.data
+      let msg = ''
+
+      if (typeof data === 'string') {
+        msg = data
+      } else if (data.detail) {
+        msg = data.detail
+      } else if (data.message) {
+        msg = data.message
+      } else if (data.errors) {
+        msg = JSON.stringify(data.errors)
+      } else {
+        msg = JSON.stringify(data)
+      }
+
+      alert('Error al actualizar: ' + msg)
+    } else {
+      alert('Error en la petición: ' + error.message)
+    }
+  }
+}
+
 
 function onProfilePicChange(event) {
   const file = event.target.files[0]

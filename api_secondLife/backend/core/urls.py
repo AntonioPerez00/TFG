@@ -3,6 +3,7 @@ from rest_framework.routers import DefaultRouter
 from .views import ProductViewSet, get_categories, get_product_states, register_user, login_user, logout_user, verify_email_code
 from .views import MyProductViewSet, get_categories, get_product_states, register_user, login_user, logout_user, verify_email_code
 from .views import mark_product_sold
+from .views import user_profile
 
 # Definir el router
 router = DefaultRouter()
@@ -17,6 +18,7 @@ urlpatterns = [
     path('products/<int:product_id>/mark_sold/', mark_product_sold, name='mark_product_sold'),
     path('categories/', get_categories, name='get_categories'),
     path('products/states/', get_product_states, name='get_product_states'),
+    path('profile/', user_profile, name='user-profile'),
 ]
 
 # Añadir las rutas generadas automáticamente por el router de productos

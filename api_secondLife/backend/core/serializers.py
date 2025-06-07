@@ -2,7 +2,12 @@ from rest_framework import serializers
 from .models import User
 from .models import Product
 from .models import Category
+from .models import User
 
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['name', 'profile_desc', 'location', 'profile_pic']
 class UserRegistroSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
