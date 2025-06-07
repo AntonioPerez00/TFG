@@ -148,7 +148,7 @@ class ProductPagination(PageNumberPagination):
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    pagination_class = ProductPagination  # 👈 Añade esto
+    # pagination_class = ProductPagination activar para paginar, pero da error con las queries
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
 
     filterset_fields = {
