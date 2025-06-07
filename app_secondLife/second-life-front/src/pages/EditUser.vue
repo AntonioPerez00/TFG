@@ -11,7 +11,7 @@
           alt="usuario"
           class="w-[10rem] h-[10rem] rounded-full object-cover mb-[1rem]"
         />
-        <label class="cursor-pointer bg-[#E5E7EB] px-[1rem] py-[0.5rem] rounded-[0.5rem] text-[0.9rem] hover:bg-[#d1d5db] transition-colors">
+        <label class="cursor-pointer bg-[#E5E7EB] px-[1rem] py-[0.5rem] rounded-[1rem] text-[0.9rem] hover:bg-[#d1d5db] transition-colors">
           Cambiar foto
           <input type="file" class="hidden" @change="onProfilePicChange" />
         </label>
@@ -25,7 +25,7 @@
           <input
             type="text"
             v-model="nombreUsuario"
-            class="border border-[#D1D5DB] rounded-[0.5rem] p-[0.8rem] text-[1rem] focus:outline-none focus:ring-2 focus:ring-[#A0AEC0]"
+            class="border border-[#D1D5DB] rounded-[1rem] p-[0.8rem] text-[1rem] focus:outline-none focus:ring-2 focus:ring-[#A0AEC0]"
           />
         </div>
 
@@ -35,7 +35,7 @@
           <input
             type="text"
             v-model="localizacion"
-            class="border border-[#D1D5DB] rounded-[0.5rem] p-[0.8rem] text-[1rem] focus:outline-none focus:ring-2 focus:ring-[#A0AEC0]"
+            class="border border-[#D1D5DB] rounded-[1rem] p-[0.8rem] text-[1rem] focus:outline-none focus:ring-2 focus:ring-[#A0AEC0]"
           />
         </div>
 
@@ -45,14 +45,14 @@
           <textarea
             v-model="descripcion"
             rows="4"
-            class="border border-[#D1D5DB] rounded-[0.5rem] p-[0.8rem] text-[1rem] resize-none focus:outline-none focus:ring-2 focus:ring-[#A0AEC0]"
+            class="border border-[#D1D5DB] rounded-[1rem] p-[0.8rem] text-[1rem] resize-none focus:outline-none focus:ring-2 focus:ring-[#A0AEC0]"
           ></textarea>
         </div>
 
         <!-- Botón Guardar -->
         <button
           type="button"
-          class="bg-[#4CAF50] text-[#FFFFFF] py-[0.8rem] rounded-[0.5rem] text-[1rem] hover:bg-[#45A049] transition-colors"
+          class="bg-[#299CA9] text-[#FFFFFF] border-none cursor-pointer py-[0.8rem] rounded-[1rem] text-[1rem] hover:bg-[#217d86] transition-colors"
         >
           Guardar cambios
         </button>
