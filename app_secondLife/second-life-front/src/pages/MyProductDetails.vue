@@ -1,200 +1,153 @@
 <template>
-  <NavBar />
+  <div class="bg-[#FFFDF8] min-h-screen" v-if="producto">
+    <NavBar />
 
-  <!-- El contenedor padre ocupa todo el ancho y centra el contenido -->
-  <div class="w-full bg-[#FFFDF8] flex justify-center">
-    <!-- El contenido tiene ancho máximo fijo y se ajusta centrado -->
-    <div id="centro" class="w-full max-w-[55rem] mt-[10rem] flex flex-col mr-[4rem] mb-[5rem]">
-      <h1 class="text-2xl font-semibold mb-[1.5rem]">Editar producto</h1>
-
-      <div class="w-full bg-[#FFFFFF] shadow-[0_2px_4px_rgba(0,0,0,0.1)] p-[1.7rem] rounded-[1rem] flex flex-col mb-[4rem] gap-[2rem]">
-        <div class="flex flex-row items-center justify-center gap-[1rem]">
-          <span class="mb-0">Título del anuncio</span>
-          <input
-            v-model="nombre"
-            placeholder="Título"
-            required
-            class="flex-1 border-0 border-b border-b-[#9f9a8f] p-[3px] text-[#9f9a8f] text-[1rem] bg-transparent focus:outline-none placeholder-[#9f9a8f]"
+    <div class="flex justify-center">
+      <div class="w-[48rem] h-[fit] bg-[#FFFFFF] mt-[8rem] mb-[8rem] shadow-[0_2px_4px_rgba(0,0,0,0.1)] rounded-[2rem] p-[2rem]">
+        <div class="mb-[1.5rem] flex items-center gap-2 cursor-pointer
+        hover:bg-[#eeeded] p-[6px] rounded-[20px] w-fit">
+          <img
+            :src="producto.user.profile_pic || '/usuario.png'"
+            class="w-[2.5rem] h-[2.5rem] rounded-full"
           />
+          <span class="ml-[0.5rem]">{{ producto.user.name }}</span>
         </div>
 
-        <div class="flex flex-row gap-[1rem]">
-          <span class="mb-0 mt-[1rem]">Descripción del producto</span>
-          <textarea
-            v-model="nombre"
-            placeholder="Le quiero dar una segunda vida por que..."
-            required
-            class="flex-1 h-[6rem] border border-[#9f9a8f] rounded-[1rem] p-[0.75rem] text-[#9f9a8f] text-[1rem] bg-transparent focus:outline-none placeholder-[#9f9a8f]"
-          ></textarea>
+        <!-- <div id="pictures" class="flex flex-row gap-[2rem]">
+          <div v-if="producto.picture1">
+            <img
+              :src="producto.picture1"
+              class="w-[23rem] rounded-[1rem]"
+            />
+          </div>
+          <div class="flex flex-row gap-[1rem] flex-wrap">
+            <img
+              v-if="producto.picture2"
+              :src="producto.picture2"
+              class="w-[11rem] h-[15rem] rounded-[1rem]"
+            />
+            <img
+              v-if="producto.picture3"
+              :src="producto.picture3"
+              class="w-[11rem] h-[15rem] rounded-[1rem]"
+            />
+            <img
+              v-if="producto.picture4"
+              :src="producto.picture4"
+              class="w-[11rem] h-[15rem] rounded-[1rem]"
+            />
+            <img
+              v-if="producto.picture5"
+              :src="producto.picture5"
+              class="w-[11rem] h-[15rem] rounded-[1rem]"
+            />
+          </div>
+        </div> -->
+
+        <div id="pictures" class="flex justify-center">
+          <div class="relative w-[30rem] h-[35rem] flex items-center justify-center mb-[2rem]">
+            <img
+              :src="imgs[currentIndex] || '/usuario.png'"
+              alt="producto"
+              class="w-full h-full rounded-[1rem] object-cover"
+            />
+
+            <button
+              @click.stop="prevImage"
+              class="absolute left-[0rem] top-1/2 transform -translate-y-1/2 bg-[#ffffffcc] border-none py-2 px-3 hover:bg-[#d3d3d3] text-[2rem] rounded-l-[1rem] z-10"
+              aria-label="Imagen anterior"
+            >
+              ‹
+            </button>
+
+            <button
+              @click.stop="nextImage"
+              class="absolute right-[0rem] top-1/2 transform -translate-y-1/2 bg-[#ffffffcc] border-none py-2 px-3 hover:bg-[#d3d3d3] text-[2rem] rounded-r-[1rem] z-10"
+              aria-label="Imagen siguiente"
+            >
+              ›
+            </button>
+          </div>
         </div>
-      </div>
 
+        <div class="ml-[1rem] mt-[1rem] flex flex-col gap-[1rem]">
+          <span class="text-[2rem] font-bold">
+            {{ producto.price }} €
+          </span>
 
-      <div class="w-full bg-[#FFFFFF] shadow-[0_2px_4px_rgba(0,0,0,0.1)] p-[1.7rem] rounded-[1rem] flex flex-col mb-[4rem]">
-        <span class="mb-[1rem]">Sube hasta 5 fotos</span>
-        <div class="w-5rem bg-[#FFFFFF] shadow-[0_2px_4px_rgba(0,0,0,0.1)] p-[1.7rem] rounded-[1rem] flex flex-row gap-[4rem]">
+          <span class="text-[2rem] font-bold">
+            {{ producto.name }}
+          </span>
 
-          <div class="border p-[1rem] rounded-[1rem] w-[5rem] h-[7rem] flex items-center justify-center cursor-pointer">
-            <img
-              :src="'/galeria-de-imagenes.png'"
-              alt="producto"
-              class="w-[2rem] h-[3rem] rounded-[0.75rem]"
-            />
-          </div>
+          <span class="whitespace-pre-line text-[1rem]">
+            {{ producto.description }}
+          </span>
 
-          <div class="border p-[1rem] rounded-[1rem] w-[5rem] h-[7rem] flex items-center justify-center  cursor-pointer">
-            <img
-              :src="'/galeria-de-imagenes.png'"
-              alt="producto"
-              class="w-[2rem] h-[3rem] rounded-[0.75rem]"
-            />
-          </div>
+          <button @click="edit(producto)" class="bg-[#299CA9] border-none text-[#FFFFFF] rounded-[1.2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[15px] cursor-pointer mt-[2rem] hover:bg-[#217d86]">
+          Editar
+          </button>
 
-          <div class="border p-[1rem] rounded-[1rem] w-[5rem] h-[7rem] flex items-center justify-center  cursor-pointer">
-            <img
-              :src="'/galeria-de-imagenes.png'"
-              alt="producto"
-              class="w-[2rem] h-[3rem] rounded-[0.75rem]"
-            />
-          </div>
-
-          <div class="border p-[1rem] rounded-[1rem] w-[5rem] h-[7rem] flex items-center justify-center  cursor-pointer">
-            <img
-              :src="'/galeria-de-imagenes.png'"
-              alt="producto"
-              class="w-[2rem] h-[3rem] rounded-[0.75rem]"
-            />
-          </div>
-
-          <div class="border p-[1rem] rounded-[1rem] w-[5rem] h-[7rem] flex items-center justify-center  cursor-pointer">
-            <img
-              :src="'/galeria-de-imagenes.png'"
-              alt="producto"
-              class="w-[2rem] h-[3rem] rounded-[0.75rem]"
-            />
-          </div>
-          
         </div>
+
         
       </div>
-
-      <div class="w-full bg-[#FFFFFF] shadow-[0_2px_4px_rgba(0,0,0,0.1)] p-[1.7rem] rounded-[1rem] flex flex-col mb-[4rem] gap-[2rem]">
-        <div class="flex flex-row items-center justify-center gap-[1rem]">
-          <span class="mb-0">Categoría</span>
-          <select class="select_category">
-            <option v-for="cat in categorias" :key="cat.id" :value="cat.id">
-              {{ cat.name }}
-            </option>
-          </select>
-        </div>
-
-      </div>
-
-      <div class="w-full bg-[#FFFFFF] shadow-[0_2px_4px_rgba(0,0,0,0.1)] p-[1.7rem] rounded-[1rem] flex flex-col mb-[4rem] gap-[2rem]">
-        <div class="flex flex-row items-center justify-center gap-[1rem]">
-          <span class="mb-0">Estado</span>
-          <select class="select_category">
-            <option v-for="estado in estados">
-              {{ estado.value }}
-            </option>
-          </select>
-        </div>
-
-      </div>
-
-      <div class="w-full bg-[#FFFFFF] shadow-[0_2px_4px_rgba(0,0,0,0.1)] p-[1.7rem] rounded-[1rem] flex flex-col mb-[4rem] gap-[2rem]">
-        <div class="flex flex-row items-center justify-center gap-[1rem]">
-          <span class="mb-0">Precio</span>
-          <input
-            v-model="nombre"
-            placeholder="Pon un precio razonable..."
-            required
-            class="flex-1 border-0 border-b border-b-[#9f9a8f] p-[3px] text-[#9f9a8f] text-[1rem] bg-transparent focus:outline-none placeholder-[#9f9a8f]"
-          />
-        </div>
-
-      </div>
-
     </div>
   </div>
-
-  <!-- Spinner overlay -->
-    <div v-if="loading" class="spinner-overlay">
-      <div class="spinner"></div>
-    </div>
 </template>
 
-
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import api from '../services/api'
 import NavBar from '../components/NavBar.vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useAuthStore } from '../stores/auth'
-import { watch } from 'vue'
 
-const router = useRouter()
-const route = useRoute()
-
-const categorias = ref([])
-const estados = ref([])
-
-
-async function fetchFiltrosOptions() {
+onMounted(async () => {
   try {
-    const [resCategorias, resEstados] = await Promise.all([
-      api.get('/categories/'),
-      api.get('products/states/')
-    ])
-    categorias.value = resCategorias.data
-    estados.value = resEstados.data
+    const res = await api.get(`/my-products/${route.params.id}/`)
+    producto.value = res.data
   } catch (error) {
-    console.error('Error al cargar filtros:', error)
-  }
-}
-
-const loading = ref(false)
-
-onMounted(() => {
-  fetchFiltrosOptions()
-
-  loading.value = true
-
-  setTimeout(() => {
+    console.error('Error al cargar el producto:', error)
+  } finally {
     loading.value = false
-  }, 300) // puedes ajustar la duración
+  }
+  console.log(producto.value?.picture1)
+
+})
+
+const route = useRoute()
+const router = useRouter()
+const producto = ref(null)
+const loading = ref(true)
+const backendURL = 'http://localhost:8000'
+const currentIndex = ref(0)
+
+const imgs = computed(() => {
+  if (!producto.value) return []
+  return [
+    producto.value.picture1,
+    producto.value.picture2,
+    producto.value.picture3,
+    producto.value.picture4,
+    producto.value.picture5,
+  ].filter(Boolean)
 })
 
 
+
+function edit(producto) {
+  router.push(`/editProduct/${producto.id}`)
+}
+
+function prevImage() {
+  if (imgs.value.length === 0) return
+  currentIndex.value = (currentIndex.value - 1 + imgs.value.length) % imgs.value.length
+}
+
+function nextImage() {
+  if (imgs.value.length === 0) return
+  currentIndex.value = (currentIndex.value + 1) % imgs.value.length
+}
+
+
+
 </script>
-
-<style>
-.spinner-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;    /* cubrir toda la pantalla */
-  height: 100vh;   /* cubrir toda la pantalla */
-  background-color: rgba(0, 0, 0, 0.4); /* fondo negro semi-transparente */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999; /* por encima de todo */
-}
-
-.spinner {
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #299CA9;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-}
-
-/* Animación giratoria */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-</style>
-

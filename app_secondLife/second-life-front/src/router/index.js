@@ -8,6 +8,7 @@ import ProductCheckout from '../pages/ProductCheckout.vue'
 import MyProductDetails from '../pages/MyProductDetails.vue'
 import User from '../pages/User.vue'
 import EditUser from '../pages/EditUser.vue'
+import EditProduct from '../pages/EditMyProduct.vue'
 
 const routes = [
   { path: '/', redirect: '/auth' },
@@ -19,6 +20,7 @@ const routes = [
   { path: '/user/:mail', component: User },
   { path: '/upload-product', component: UploadProduct },
   { path: '/edit', component: EditUser },
+  { path: '/editProduct/:id', component: EditProduct },
 ]
 
 const router = createRouter({

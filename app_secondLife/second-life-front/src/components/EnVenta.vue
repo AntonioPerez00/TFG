@@ -23,11 +23,9 @@ const router = useRouter()
 // Por si usas filtros u otros parámetros:
 const params = {disponibility: 'en_venta'}
 
-// Función opcional para manejar click
 function myProductDetails(producto) {
   const url = router.resolve(`/my-product/${producto.id}`).href
   window.open(url, '_blank')
-  // Aquí puedes redirigir, abrir modal, etc.
 }
 
 async function filtrarProductos(){
