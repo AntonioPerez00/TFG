@@ -7,10 +7,10 @@
       <!-- Imagen de perfil y botón -->
       <div class="flex flex-col items-center mb-[2rem]">
         <img
-          :src="profile_pic || '/usuario.png'"
-          alt="usuario"
-          class="w-[10rem] h-[10rem] rounded-full object-cover mb-[1rem]"
-        />
+  :src="profilePreview || '/usuario.png'"
+  alt="usuario"
+  class="w-[10rem] h-[10rem] rounded-full object-cover mb-[1rem]"
+/>
         <label class="cursor-pointer bg-[#E5E7EB] px-[1rem] py-[0.5rem] rounded-[1rem] text-[0.9rem] hover:bg-[#d1d5db] transition-colors">
           Cambiar foto
           <input type="file" class="hidden" @change="onProfilePicChange" />
@@ -66,6 +66,7 @@
 import { ref } from 'vue'
 import NavBar from '../components/NavBar.vue'
 import axios from 'axios'
+import api from '../services/api'
 
 function safeGet(key) {
   const value = localStorage.getItem(key)
@@ -73,7 +74,8 @@ function safeGet(key) {
 }
 
 const nombreUsuario = ref(safeGet('name'))
-const profile_pic = ref(safeGet('profile_pic'))
+const profile_pic = ref(null) // Ahora será el File, no base64
+const profilePreview = ref(safeGet('profile_pic')) // Para previsualizar la imagen
 const localizacion = ref(safeGet('location'))
 const descripcion = ref(safeGet('profile_desc'))
 
@@ -89,54 +91,38 @@ async function guardarCambios() {
     return
   }
 
-  // Construir el objeto sólo con los campos no vacíos, excepto el nombre que es obligatorio
-  const datosActualizar = {
-    name: nombreUsuario.value.trim(),
-  }
+  const formData = new FormData()
+  formData.append('name', nombreUsuario.value.trim())
 
   if (localizacion.value.trim() !== '') {
-    datosActualizar.location = localizacion.value.trim()
+    formData.append('location', localizacion.value.trim())
   }
   if (descripcion.value.trim() !== '') {
-    datosActualizar.profile_desc = descripcion.value.trim()
+    formData.append('profile_desc', descripcion.value.trim())
   }
-  if (profile_pic.value && profile_pic.value.trim() !== '') {
-    datosActualizar.profile_pic = profile_pic.value
+  if (profile_pic.value) {
+    formData.append('profile_pic', profile_pic.value)
   }
 
   try {
-    const res = await axios.put('/api/profile/', datosActualizar, {
+    const res = await api.put('/profile/', formData, {
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
       },
     })
 
     alert('Perfil actualizado correctamente')
-    // Aquí podrías actualizar localStorage o refs con res.data si quieres
+    // Aquí puedes actualizar localStorage con res.data si quieres
 
   } catch (error) {
-    if (error.response) {
-      // Mostrar mensaje más legible si viene en data.detail o data.message o data.errors
-      const data = error.response.data
-      let msg = ''
+    const data = error.response?.data || {}
+    const msg =
+      typeof data === 'string'
+        ? data
+        : data.detail || data.message || JSON.stringify(data.errors || data)
 
-      if (typeof data === 'string') {
-        msg = data
-      } else if (data.detail) {
-        msg = data.detail
-      } else if (data.message) {
-        msg = data.message
-      } else if (data.errors) {
-        msg = JSON.stringify(data.errors)
-      } else {
-        msg = JSON.stringify(data)
-      }
-
-      alert('Error al actualizar: ' + msg)
-    } else {
-      alert('Error en la petición: ' + error.message)
-    }
+    alert('Error al actualizar: ' + msg)
   }
 }
 
@@ -144,11 +130,14 @@ async function guardarCambios() {
 function onProfilePicChange(event) {
   const file = event.target.files[0]
   if (file) {
+    profile_pic.value = file
+
     const reader = new FileReader()
     reader.onload = () => {
-      profile_pic.value = reader.result
+      profilePreview.value = reader.result
     }
     reader.readAsDataURL(file)
   }
 }
+
 </script>
