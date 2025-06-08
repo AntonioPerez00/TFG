@@ -27,7 +27,7 @@
       />
       <div
         v-if="dropdownVisible"
-        class="absolute mt-[8rem] w-40 bg-[#FFFFFF] shadow-lg z-50 pl-[1rem] pr-[1rem] rounded-[1rem] shadow-[0_2px_4px_rgba(0,0,0,0.1)] z-[9999]"
+        class="absolute mt-[8rem] w-[6rem] bg-[#FFFFFF] shadow-lg z-50 pl-[1rem] pr-[1rem] rounded-[1rem] shadow-[0_2px_4px_rgba(0,0,0,0.1)] z-[9999]"
       >
         
           <p
