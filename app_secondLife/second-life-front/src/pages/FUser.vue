@@ -28,6 +28,14 @@
         <p class="text-[0.95rem] text-gray-600">
             {{ profile_desc || '' }}
         </p>
+        <div class="flex flex-row">
+      <div class="flex flex-row">
+      <img v-if="location" src="/mapa.png" alt="mapa" class="w-[1.3rem] mr-[1rem]">
+      <span class="text-[0.95rem] text-gray-600">
+        {{ location || '' }}
+      </span>
+    </div>
+    </div>
         </div>
 
         <div id="products" class="m-[5rem]">
@@ -74,6 +82,7 @@ const activeTab = ref('EnVenta')
 
 const correo = ref('')
 const profile_desc = ref('')
+const location = ref('')
 
 
 onMounted(async () => {
@@ -84,6 +93,7 @@ onMounted(async () => {
     profile_pic.value = user.value.profile_pic
     correo.value = user.value.mail
     profile_desc.value = user.value.profile_desc
+    location.value = user.value.location
   } catch (err) {
     console.error('Error al cargar el usuario:', err)
   }

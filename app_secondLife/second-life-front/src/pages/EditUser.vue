@@ -94,12 +94,11 @@ async function guardarCambios() {
   const formData = new FormData()
   formData.append('name', nombreUsuario.value.trim())
 
-  if (localizacion.value.trim() !== '') {
+  
     formData.append('location', localizacion.value.trim())
-  }
-  if (descripcion.value.trim() !== '') {
+  
     formData.append('profile_desc', descripcion.value.trim())
-  }
+  
   if (profile_pic.value) {
     formData.append('profile_pic', profile_pic.value)
   }

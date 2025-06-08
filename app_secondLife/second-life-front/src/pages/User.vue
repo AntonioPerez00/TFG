@@ -37,6 +37,12 @@
     <p class="text-[0.95rem] text-gray-600">
         {{ profile_desc || '' }}
     </p>
+    <div class="flex flex-row">
+      <img v-if="location" src="/mapa.png" alt="mapa" class="w-[1.3rem] mr-[1rem]">
+      <span class="text-[0.95rem] text-gray-600">
+        {{ location || '' }}
+      </span>
+    </div>
     </div>
 
     <div id="products" class="m-[5rem]">
@@ -76,6 +82,7 @@ const profile_pic = ref('')
 const correo = ref('')
 const profile_desc = ref('')
 const activeTab = ref('EnVenta')
+const location = ref('')
 
 const route = useRoute()
 const router = useRouter()
@@ -84,6 +91,7 @@ nombreUsuario.value = localStorage.getItem('name')
 profile_pic.value = localStorage.getItem('profile_pic')
 correo.value = localStorage.getItem('mail')
 profile_desc.value = localStorage.getItem('profile_desc')
+location.value = localStorage.getItem('location')
 
 function uploadProduct() {
   router.push('/upload-product/')
