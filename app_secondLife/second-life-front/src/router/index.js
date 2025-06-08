@@ -7,6 +7,7 @@ import ProductDetails from '../pages/ProductDetails.vue'
 import ProductCheckout from '../pages/ProductCheckout.vue'
 import MyProductDetails from '../pages/MyProductDetails.vue'
 import User from '../pages/User.vue'
+import FUser from '../pages/FUser.vue'
 import EditUser from '../pages/EditUser.vue'
 import EditProduct from '../pages/EditMyProduct.vue'
 
@@ -18,6 +19,7 @@ const routes = [
   { path: '/my-product/:id', component: MyProductDetails },
   { path: '/checkout/:id', component: ProductCheckout },
   { path: '/user/:mail', component: User },
+  { path: '/fuser/:mail', component: FUser },
   { path: '/upload-product', component: UploadProduct },
   { path: '/edit', component: EditUser },
   { path: '/editProduct/:id', component: EditProduct },
