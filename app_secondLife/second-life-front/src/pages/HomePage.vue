@@ -104,11 +104,33 @@ async function filtrarProductos(busqueda = '', filtros = {}, cargarMas = false) 
 // Estas funciones se ejecutan al recibir los emits:
 function actualizarBusqueda(nuevaBusqueda) {
   busquedaActual.value = nuevaBusqueda
-  filtrarProductos(busquedaActual.value, filtrosActivos.value)
+
+  router.push({
+    query: {
+      ...route.query,
+      search: nuevaBusqueda || undefined,
+    }
+  })
+
+  filtrarProductos(nuevaBusqueda, filtrosActivos.value)
 }
 
 function actualizarFiltros(nuevosFiltros) {
   filtrosActivos.value = nuevosFiltros
+
+  // Actualizar los query params
+  router.push({
+    query: {
+      ...route.query,
+      category: nuevosFiltros.categoria || undefined,
+      state: nuevosFiltros.estado || undefined,
+      price__gte: nuevosFiltros.precioDesde || undefined,
+      price__lte: nuevosFiltros.precioHasta || undefined,
+      ordering: nuevosFiltros.orden || undefined,
+      search: busquedaActual.value || undefined, // para mantener la búsqueda si la hay
+    }
+  })
+
   filtrarProductos(busquedaActual.value, nuevosFiltros)
 }
 

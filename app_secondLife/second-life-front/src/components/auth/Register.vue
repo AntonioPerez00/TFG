@@ -51,7 +51,8 @@
       <button
         type="submit"
         :disabled="passwordMismatch || registrando"
-        class="bg-[#299CA9] disabled:opacity-50 pointer-cursor border-none text-[#FFFFFF] rounded-[10px] mt-[2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[19px] cursor-pointer hover:bg-[#217d86]"
+        class="bg-[#299CA9] disabled:opacity-50 pointer-cursor border-none text-[#FFFFFF] rounded-[10px] 
+        mt-[2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[19px] cursor-pointer hover:bg-[#217d86]"
       >
          {{ registrando ? 'Procesando...' : 'Continuar' }}
       </button>

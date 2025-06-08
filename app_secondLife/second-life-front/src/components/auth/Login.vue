@@ -30,7 +30,8 @@
 
     </div>
     <p v-if="error" id="error" class="text-[#CC6565]">{{ error }}</p>
-    <button type="submit" class="bg-[#299CA9] cursor-pointer border-none text-[#FFFFFF] rounded-[10px] mt-[2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[19px] hover:bg-[#217d86]">
+    <button type="submit" class="bg-[#299CA9] cursor-pointer border-none text-[#FFFFFF] 
+    rounded-[10px] mt-[2rem] pt-[10px] pb-[10px] pl-[25px] pr-[25px] text-[19px] hover:bg-[#217d86]">
       Iniciar sesión
     </button>
   </form>
@@ -63,24 +64,22 @@ async function login() {
     })
 
     if (!response.ok) {
-  let errorText = 'Login fallido'
-  try {
-    const errorData = await response.json()
+      let errorText = 'Login fallido'
+      try {
+        const errorData = await response.json()
 
-    // Buscar distintos posibles campos de error
-    if (errorData.detail) {
-      errorText = errorData.detail
-    } else {
-      errorText = Object.values(errorData).flat().join('\n')
+        if (errorData.detail) {
+          errorText = errorData.detail
+        } else {
+          errorText = Object.values(errorData).flat().join('\n')
+        }
+      } catch {
+        errorText = 'Respuesta no válida del servidor'
+      }
+
+      error.value = errorText
+      return
     }
-  } catch {
-    errorText = 'Respuesta no válida del servidor'
-  }
-
-  error.value = errorText
-  return
-}
-
 
     let data = null
     try {
@@ -97,7 +96,7 @@ async function login() {
     localStorage.setItem('profile_pic', data.profile_pic)
     localStorage.setItem('location', data.location)
     localStorage.setItem('profile_desc', data.profile_desc)
-    
+
     emit('authenticated')
   } catch (err) {
     error.value = 'Error de conexión'
