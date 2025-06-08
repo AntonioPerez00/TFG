@@ -23,7 +23,7 @@
       <img
         :src="profile_pic || '/usuario.png'"
         alt="usuario"
-        class="w-[2.5rem] h-[2.5rem] rounded-full"
+        class="w-[2.5rem] h-[2.5rem] rounded-full object-cover"
       />
       <div
         v-if="dropdownVisible"
@@ -87,7 +87,7 @@ async function cerrarSesion() {
 
   // Redirige al usuario si lo deseas (opcional)
   router.push('/home')  // o cualquier ruta pública, como '/login'
-
+  window.location.reload()
 }
 
 function handleMenuClick() {

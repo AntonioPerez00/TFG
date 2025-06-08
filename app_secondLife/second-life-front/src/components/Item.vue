@@ -25,8 +25,8 @@
     </button>
 
     <div class="flex flex-col pl-[0.4rem] gap-[0.2rem]">
-      <span><b>{{ producto.name }}</b></span>
-      <span>{{ producto.price }} €</span>
+      <span class="precio">{{ producto.price }} €</span>
+      <span>{{ producto.name }}</span>
       <span>{{ producto.state }}</span>
     </div>
   </div>
@@ -59,3 +59,9 @@ function nextImage() {
   currentIndex.value = (currentIndex.value + 1) % imgs.length
 }
 </script>
+
+<style>
+.precio {
+  font-weight: 700;
+}
+</style>
