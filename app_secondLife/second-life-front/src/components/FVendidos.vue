@@ -24,13 +24,6 @@ const mail = route.params.mail
 // Por si usas filtros u otros parámetros:
 const params = {disponibility: 'vendido'}
 
-// Función opcional para manejar click
-function myProductDetails(producto) {
-  const url = router.resolve(`/my-product/${producto.id}`).href
-  window.open(url, '_blank')
-  // Aquí puedes redirigir, abrir modal, etc.
-}
-
 async function filtrarProductos(){
   try {
     const [response] = await Promise.all([

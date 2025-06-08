@@ -10,6 +10,7 @@ import User from '../pages/User.vue'
 import FUser from '../pages/FUser.vue'
 import EditUser from '../pages/EditUser.vue'
 import EditProduct from '../pages/EditMyProduct.vue'
+import Mysoldproduct from '../pages/MySoldProduct.vue'
 
 const routes = [
   { path: '/', redirect: '/auth' },
@@ -23,6 +24,7 @@ const routes = [
   { path: '/upload-product', component: UploadProduct },
   { path: '/edit', component: EditUser },
   { path: '/editProduct/:id', component: EditProduct },
+  { path: '/my-soldproduct/:id', component: Mysoldproduct },
 ]
 
 const router = createRouter({

@@ -5,6 +5,7 @@
       :key="producto.id"
       :producto="producto"
       class="cursor-pointer relative"
+      @click="productDetails(producto)"
     />
   </div>
 </template>
@@ -25,6 +26,11 @@ const mail = route.params.mail // 👈 Esto es lo que faltaba
 
 const params = { disponibility: 'en_venta' }
 
+function productDetails(producto) {
+  const url = router.resolve(`/product/${producto.id}`).href
+  window.open(url, '_blank')
+  // Aquí puedes redirigir, abrir modal, etc.
+}
 
 async function filtrarProductos(){
   try {

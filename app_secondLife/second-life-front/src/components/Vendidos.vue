@@ -5,6 +5,7 @@
       :key="producto.id"
       :producto="producto"
       class="cursor-pointer relative"
+      @click="myProductDetails(producto)"
     />
   </div>
 </template>
@@ -24,7 +25,7 @@ const params = {disponibility: 'vendido'}
 
 // Función opcional para manejar click
 function myProductDetails(producto) {
-  const url = router.resolve(`/my-product/${producto.id}`).href
+  const url = router.resolve(`/my-soldproduct/${producto.id}`).href
   window.open(url, '_blank')
   // Aquí puedes redirigir, abrir modal, etc.
 }
