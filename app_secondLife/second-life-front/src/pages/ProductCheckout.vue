@@ -2,7 +2,7 @@
   <div class="bg-[#FFFDF8] min-h-screen" v-if="producto">
     <NavBar />
 
-    <div class="mt-[8rem] ml-[8rem] mr-[8rem]">
+    <div class="pt-[8rem] max-w-[80rem] mx-auto px-4 pl-[8.5rem]">
       <h2 class="mb-[2rem]">Comprar artículo</h2>
 
       <div class=" flex flex-row gap-[3rem] flex-wrap">

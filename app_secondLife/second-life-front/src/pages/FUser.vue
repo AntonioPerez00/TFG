@@ -14,8 +14,18 @@
                 <span class="text-[1.5rem] ml-[1.5rem]">
                     {{ nombreUsuario || 'Iniciar sesión' }}
                 </span>
+                <span class="text-[1rem] text-gray-500">
+                    {{ correo || '' }}
+                </span>
             </div>
 
+        </div>
+
+        <div class=" ml-[6rem] mt-[3rem]">
+        <h2>Sobre mí</h2>
+        <p class="text-[0.95rem] text-gray-600">
+            {{ profile_desc || '' }}
+        </p>
         </div>
 
         <div id="products" class="m-[5rem]">
@@ -60,12 +70,18 @@ const profile_pic = ref('')
 const user = ref(null)
 const activeTab = ref('EnVenta')
 
+const correo = ref('')
+const profile_desc = ref('')
+
+
 onMounted(async () => {
   try {
     const res = await api.get(`/users/${route.params.mail}/`)
     user.value = res.data
     nombreUsuario.value = user.value.name
     profile_pic.value = user.value.profile_pic
+    correo.value = user.value.mail
+    profile_desc.value = user.value.profile_desc
   } catch (err) {
     console.error('Error al cargar el usuario:', err)
   }
