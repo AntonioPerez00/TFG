@@ -11,12 +11,14 @@
                 class="w-[6rem] h-[6rem] rounded-full object-cover"
                 />
 
-                <span class="text-[1.5rem] ml-[1.5rem]">
+                <div class="ml-[1.5rem] flex flex-col">
+                <span class="text-[1.5rem] font-medium">
                     {{ nombreUsuario || 'Iniciar sesión' }}
                 </span>
                 <span class="text-[1rem] text-gray-500">
                     {{ correo || '' }}
                 </span>
+                </div>
             </div>
 
         </div>
