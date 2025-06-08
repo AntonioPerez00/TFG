@@ -27,6 +27,8 @@ class UserBasicSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'mail', 'profile_pic', 'location']
 class ProductSerializer(serializers.ModelSerializer):
     user = UserBasicSerializer(read_only=True)  # Esto reemplaza el ID por un diccionario con datos
+    price = serializers.DecimalField(max_digits=10, decimal_places=2)
+
     class Meta:
         model = Product
         fields = '__all__'

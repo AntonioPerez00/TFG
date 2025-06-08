@@ -66,7 +66,11 @@ class Product(models.Model):
         ('cancelado', 'Cancelado'),
     ]
 
-    price = models.IntegerField(help_text="Precio del producto en euros.")
+    price = models.DecimalField(
+    max_digits=10,  # Total de dígitos
+    decimal_places=2,  # Número de decimales permitidos
+    help_text="Precio del producto en euros (con decimales)."
+    )
     name = models.CharField(max_length=45, null=True, blank=True, help_text="Título o nombre del producto.")
     user = models.ForeignKey(User, on_delete=models.CASCADE, help_text="Usuario que ha publicado el producto.")
     category = models.ForeignKey(Category, on_delete=models.RESTRICT, help_text="Categoría a la que pertenece el producto.")
