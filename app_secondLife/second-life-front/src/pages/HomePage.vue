@@ -126,13 +126,9 @@ onMounted(() => {
 
   busquedaActual.value = query.search || ''
 
-  window.addEventListener('scroll', handleScroll)
   filtrarProductos(busquedaActual.value, filtrosActivos.value)
 })
 
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
 
 watch(() => route.query, (nuevaQuery) => {
   filtrosActivos.value = {
@@ -147,12 +143,6 @@ watch(() => route.query, (nuevaQuery) => {
   filtrarProductos(busquedaActual.value, filtrosActivos.value)
 })
 
-function handleScroll() {
-  const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 300
-  if (nearBottom && !loading.value && !finDeResultados.value) {
-    filtrarProductos(busquedaActual.value, filtrosActivos.value, true)
-  }
-}
 
 </script>
 
