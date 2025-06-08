@@ -31,6 +31,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework.pagination import PageNumberPagination
 from .serializers import UserProfileSerializer
+from rest_framework import generics
 
 
 # Se hacen de forma diferente al tener que utilizar campos diferentes a los de los usuarios de django
@@ -43,6 +44,26 @@ from .serializers import UserProfileSerializer
 #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['GET'])
+def get_user_by_mail(request, mail):
+    user = get_object_or_404(User, mail=mail)
+    serializer = UserProfileSerializer(user)
+    return Response(serializer.data)
+
+class UserProductsView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        mail = self.kwargs['mail']
+        estado = self.request.query_params.get('disponibility')  # puede ser 'en_venta' o 'vendido'
+
+        queryset = Product.objects.filter(user__mail=mail)
+
+        if estado:
+            queryset = queryset.filter(disponibility=estado)
+
+        return queryset
+    
 @api_view(['GET', 'PUT'])
 def user_profile(request):
     user = request.user
@@ -148,7 +169,6 @@ class ProductPagination(PageNumberPagination):
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    # pagination_class = ProductPagination activar para paginar, pero da error con las queries
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
 
     filterset_fields = {
@@ -168,7 +188,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         if user.is_authenticated:
             # Excluir productos propios
             queryset = queryset.exclude(user=user)
-        # Opcional: aquí podrías filtrar también solo productos en venta, por ejemplo:
+        # Filtrar por productos en venta
         queryset = queryset.filter(disponibility='en_venta')
         return queryset
 
