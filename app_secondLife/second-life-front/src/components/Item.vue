@@ -9,7 +9,7 @@
     <!-- Botón izquierdo -->
     <button
       @click.stop="prevImage"
-      class="absolute top-1/2  transform -translate-y-1/2 bg-transparent border-none py-1 hover:bg-[#D3D3D3] text-[1.7rem] z-10"
+      class="absolute top-1/2  transform -translate-y-1/2 bg-transparent rounded-full border-none py-1 hover:bg-[#D3D3D3] text-[1.7rem] z-10"
       aria-label="Imagen anterior"
     >
       ‹
@@ -18,7 +18,7 @@
     <!-- Botón derecho -->
     <button
       @click.stop="nextImage" 
-      class="absolute top-1/2 right-[0px] transform -translate-y-1/2 bg-transparent border-none px-2 py-1 hover:bg-[#D3D3D3] text-[1.7rem] hover:bg-gray-400 z-10"
+      class="absolute top-1/2 right-[0px] transform -translate-y-1/2 bg-transparent rounded-full border-none px-2 py-1 hover:bg-[#D3D3D3] text-[1.7rem] hover:bg-gray-400 z-10"
       aria-label="Imagen siguiente"
     >
       ›
