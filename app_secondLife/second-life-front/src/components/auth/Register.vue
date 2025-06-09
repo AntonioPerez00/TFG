@@ -69,7 +69,7 @@
 <script setup>
 import eye from '../../assets/ojo.png'
 import invisible from '../../assets/invisible.png'
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 const email = ref('')
 const username = ref('')
@@ -84,7 +84,13 @@ const registrando = ref(false)
 const emit = defineEmits(['registered'])
 
 async function onSubmit() {
-  registrando.value = true // ← Activar "Procesando..." antes de la petición
+  // Validación del dominio de email
+  if (!email.value.endsWith('@gmail.com')) {
+    alert('El correo debe ser de tipo @gmail.com')
+    return
+  }
+
+  registrando.value = true
 
   try {
     const response = await fetch('http://localhost:8000/api/registro/', {
@@ -101,24 +107,22 @@ async function onSubmit() {
 
     if (!response.ok) {
       const errorData = await response.json()
-
-      const messages = Object.values(errorData)
-        .flat()
-        .join('\n')
-
+      const messages = Object.values(errorData).flat().join('\n')
       alert(`Error en el registro:\n${messages}`)
-      return // no pongas aquí registrando = false, lo haremos en finally
+      return
     }
 
     alert('Usuario registrado. Revisa tu correo para activarlo.')
+    localStorage.setItem('pending_verification_email', email.value)
     isCodeStep.value = true
   } catch (error) {
     console.error('Error:', error)
     alert('Error de red al registrar.')
   } finally {
-    registrando.value = false // ← Siempre desactiva "Procesando..." al final
+    registrando.value = false
   }
 }
+
 
 
 async function verifyCode() {
@@ -133,6 +137,8 @@ async function verifyCode() {
         code: code.value,
       }),
     })
+
+    localStorage.removeItem('pending_verification_email')
 
     if (!response.ok) {
       const errorData = await response.json()
@@ -152,5 +158,13 @@ async function verifyCode() {
 watch([frontPasswordRegister, confirmPassword], () => {
   passwordMismatch.value =
     frontPasswordRegister.value !== confirmPassword.value
+})
+
+onMounted(() => {
+  const storedEmail = localStorage.getItem('pending_verification_email')
+  if (storedEmail) {
+    email.value = storedEmail
+    isCodeStep.value = true
+  }
 })
 </script>

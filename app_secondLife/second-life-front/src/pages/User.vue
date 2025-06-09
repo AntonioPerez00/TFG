@@ -87,11 +87,17 @@ const location = ref('')
 const route = useRoute()
 const router = useRouter()
 
-nombreUsuario.value = localStorage.getItem('name')
-profile_pic.value = localStorage.getItem('profile_pic')
-correo.value = localStorage.getItem('mail')
-profile_desc.value = localStorage.getItem('profile_desc')
-location.value = localStorage.getItem('location')
+function getSafeItem(key) {
+  const value = localStorage.getItem(key)
+  return value === null || value === 'null' ? '' : value
+}
+
+nombreUsuario.value = getSafeItem('name')
+profile_pic.value = getSafeItem('profile_pic')
+correo.value = getSafeItem('mail')
+profile_desc.value = getSafeItem('profile_desc')
+location.value = getSafeItem('location')
+
 
 function uploadProduct() {
   router.push('/upload-product/')

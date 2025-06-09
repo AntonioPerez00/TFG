@@ -115,7 +115,11 @@ async function guardarCambios() {
     localStorage.setItem('name', res.data.name || '')
     localStorage.setItem('location', res.data.location || '')
     localStorage.setItem('profile_desc', res.data.profile_desc || '')
-    localStorage.setItem('profile_pic', 'http://localhost:8000' + res.data.profile_pic || '')
+    localStorage.setItem(
+      'profile_pic',
+      res.data.profile_pic ? 'http://localhost:8000' + res.data.profile_pic : ''
+    )
+
 
     window.location.reload()
 

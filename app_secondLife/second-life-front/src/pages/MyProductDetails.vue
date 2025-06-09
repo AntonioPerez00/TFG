@@ -54,7 +54,7 @@
 
             <button
               @click.stop="prevImage"
-              class="absolute left-[0rem] top-1/2 transform -translate-y-1/2 bg-[#ffffffcc] border-none py-2 px-3 hover:bg-[#d3d3d3] text-[2rem] rounded-l-[1rem] z-10"
+              class="absolute left-[0rem] top-1/2 transform -translate-y-1/2 bg-[#ffffffcc] border-none py-2 px-3 hover:bg-[#d3d3d3] text-[2rem] rounded-full z-10"
               aria-label="Imagen anterior"
             >
               ‹
@@ -62,7 +62,7 @@
 
             <button
               @click.stop="nextImage"
-              class="absolute right-[0rem] top-1/2 transform -translate-y-1/2 bg-[#ffffffcc] border-none py-2 px-3 hover:bg-[#d3d3d3] text-[2rem] rounded-r-[1rem] z-10"
+              class="absolute right-[0rem] top-1/2 transform -translate-y-1/2 bg-[#ffffffcc] border-none py-2 px-3 hover:bg-[#d3d3d3] text-[2rem] rounded-full z-10"
               aria-label="Imagen siguiente"
             >
               ›
