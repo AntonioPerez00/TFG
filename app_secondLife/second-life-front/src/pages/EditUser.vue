@@ -5,13 +5,26 @@
     <div class="mt-[7rem] w-full max-w-[40rem] px-[2rem]">
 
       <!-- Imagen de perfil y botón -->
-      <div class="flex flex-col items-center mb-[2rem]">
+      <div class="flex flex-col items-center mb-[2rem] relative">
+        <!-- Botón para quitar imagen -->
+        <button
+          v-if="profilePreview"
+          @click="eliminarImagen"
+          class="absolute top-0 right-0 bg-red-500 text-white rounded-full ml-[5rem] w-6 h-6 flex items-center justify-center hover:bg-red-600 transition-colors"
+          title="Eliminar imagen"
+        >
+          &times;
+        </button>
+
         <img
-  :src="profilePreview || '/usuario.png'"
-  alt="usuario"
-  class="w-[10rem] h-[10rem] rounded-full object-cover mb-[1rem]"
-/>
-        <label class="cursor-pointer bg-[#E5E7EB] px-[1rem] py-[0.5rem] rounded-[1rem] text-[0.9rem] hover:bg-[#d1d5db] transition-colors">
+          :src="profilePreview || '/usuario.png'"
+          alt="usuario"
+          class="w-[10rem] h-[10rem] rounded-full object-cover mb-[1rem]"
+        />
+
+        <label
+          class="cursor-pointer bg-[#E5E7EB] px-[1rem] py-[0.5rem] rounded-[1rem] text-[0.9rem] hover:bg-[#d1d5db] transition-colors"
+        >
           Cambiar foto
           <input type="file" class="hidden" @change="onProfilePicChange" />
         </label>
@@ -101,6 +114,9 @@ async function guardarCambios() {
   
   if (profile_pic.value) {
     formData.append('profile_pic', profile_pic.value)
+    eliminarImagenFlag.value = false // Porque hay imagen nueva, no borramos
+  } else if (eliminarImagenFlag.value) {
+    formData.append('profile_pic', '') // Le indicamos que borre la imagen
   }
 
   try {
@@ -132,6 +148,16 @@ async function guardarCambios() {
 
     alert('Error al actualizar: ' + msg)
   }
+}
+
+const eliminarImagenFlag = ref(false)
+
+function eliminarImagen() {
+  profile_pic.value = null
+  profilePreview.value = ''
+  eliminarImagenFlag.value = true  // Marcamos que la imagen se ha borrado
+  localStorage.removeItem('profile_pic')
+  localStorage.setItem('profile_pic', '')
 }
 
 

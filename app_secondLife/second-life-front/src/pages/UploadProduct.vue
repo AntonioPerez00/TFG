@@ -31,7 +31,7 @@
 
 
       <div class="w-full bg-[#FFFFFF] shadow-[0_2px_4px_rgba(0,0,0,0.1)] p-[1.7rem] rounded-[1rem] flex flex-col mb-[4rem]">
-        <span class="mb-[1rem]">Sube hasta 5 fotos</span>
+        <span class="mb-[1rem]">Sube hasta 5 fotos, la primera imagen será la que salga como principal</span>
         <div class="w-5rem bg-[#FFFFFF] shadow-[0_2px_4px_rgba(0,0,0,0.1)] p-[1.7rem] rounded-[1rem] flex flex-row gap-[4rem]">
 
           <div class="flex flex-row gap-[4rem]">
@@ -48,6 +48,16 @@
                 :ref="el => fileInputs[index] = el"
                 @change="event => handleImageUpload(event, index)"
               />
+              <!-- Botón para borrar la imagen -->
+              <button
+                v-if="preview"
+                @click.stop="removeImage(index)"
+                class="absolute top-1 right-1 bg-black bg-opacity-60 text-white rounded-full w-6 h-6 flex justify-center items-center text-xs font-bold z-10"
+                aria-label="Eliminar imagen"
+                title="Eliminar imagen"
+              >
+                ×
+              </button>
               <img
                 v-if="preview"
                 :src="preview"
@@ -216,13 +226,25 @@ async function checkout() {
   }
 }
 
+function removeImage(index) {
+  if (previews.value[index]) {
+    URL.revokeObjectURL(previews.value[index])
+  }
+  imagenes.value[index] = null
+  previews.value[index] = null
+}
 
 function handleImageUpload(event, index) {
   const file = event.target.files[0]
   if (file) {
+    if (previews.value[index]) {
+      URL.revokeObjectURL(previews.value[index])  // liberar la anterior
+    }
     imagenes.value[index] = file
     previews.value[index] = URL.createObjectURL(file)
+    previews.value = [...previews.value]  // forzar reactividad
   }
+  event.target.value = null
 }
 
 const fileInputs = [] // Guardamos refs de inputs

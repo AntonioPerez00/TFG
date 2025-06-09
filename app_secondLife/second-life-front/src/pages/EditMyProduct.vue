@@ -31,7 +31,7 @@
 
 
       <div class="w-full bg-[#FFFFFF] shadow-[0_2px_4px_rgba(0,0,0,0.1)] p-[1.7rem] rounded-[1rem] flex flex-col mb-[4rem]">
-        <span class="mb-[1rem]">Sube hasta 5 fotos</span>
+        <span class="mb-[1rem]">Sube hasta 5 fotos, la primera imagen será la que salga como principal</span>
         <div class="w-5rem bg-[#FFFFFF] shadow-[0_2px_4px_rgba(0,0,0,0.1)] p-[1.7rem] rounded-[1rem] flex flex-row gap-[4rem]">
 
           <div class="flex flex-row gap-[4rem]">
@@ -48,6 +48,16 @@
                 :ref="el => fileInputs[index] = el"
                 @change="event => handleImageUpload(event, index)"
               />
+              <!-- Botón para borrar la imagen -->
+              <button
+                v-if="preview"
+                @click.stop="removeImage(index)"
+                class="absolute top-1 right-1 bg-black bg-opacity-60 text-white rounded-full w-6 h-6 flex justify-center items-center text-xs font-bold z-10"
+                aria-label="Eliminar imagen"
+                title="Eliminar imagen"
+              >
+                ×
+              </button>
               <img
                 v-if="preview"
                 :src="preview"
@@ -61,12 +71,11 @@
                 class="w-[2rem] h-[3rem] rounded-[0.75rem] p-[1rem]"
               />
             </div>
-</div>
-
+          </div>
 
         </div>
-        
       </div>
+
 
       <div class="w-full bg-[#FFFFFF] shadow-[0_2px_4px_rgba(0,0,0,0.1)] p-[1.7rem] rounded-[1rem] flex flex-col mb-[4rem] gap-[2rem]">
         <div class="flex flex-row items-center justify-center gap-[1rem]">
@@ -150,7 +159,31 @@ const estadoSeleccionado = ref(null)
 const precio = ref('')
 const productId = route.params.id
 
-console.log(productId)
+const fileInputs = []
+
+function removeImage(index) {
+  // Liberar URL objeto si existe preview
+  if (previews.value[index]) {
+    URL.revokeObjectURL(previews.value[index])
+  }
+  // Eliminar archivo y preview
+  imagenes.value[index] = null
+  previews.value[index] = null
+}
+
+function handleImageUpload(event, index) {
+  const file = event.target.files[0]
+  if (file) {
+    // Si ya hay una preview anterior, liberamos memoria
+    if (previews.value[index]) {
+      URL.revokeObjectURL(previews.value[index])
+    }
+    imagenes.value[index] = file
+    previews.value[index] = URL.createObjectURL(file)
+    previews.value = [...previews.value]
+  }
+  event.target.value = null // limpiar input para poder subir el mismo archivo después
+}
 
 async function fetchProduct() {
   if (!productId) return
@@ -240,9 +273,12 @@ async function checkout() {
     formData.append('disponibility', 'en_venta') 
 
     imagenes.value.forEach((file, index) => {
-      if (file) {
-        formData.append(`picture${index + 1}`, file)
+      if (imagenes.value[index]) {
+        formData.append(`picture${index + 1}`, imagenes.value[index])
+      } else if (previews.value[index] === null) {
+        formData.append(`delete_picture${index + 1}`, 'true')
       }
+
     })
 
     const res = await api.put(`/my-products/${productId}/`, formData, {
@@ -262,17 +298,6 @@ async function checkout() {
     comprando.value = false
   }
 }
-
-
-function handleImageUpload(event, index) {
-  const file = event.target.files[0]
-  if (file) {
-    imagenes.value[index] = file
-    previews.value[index] = URL.createObjectURL(file)
-  }
-}
-
-const fileInputs = [] // Guardamos refs de inputs
 
 // Aunque se llame así es para cargar los selects
 async function fetchFiltrosOptions() {
