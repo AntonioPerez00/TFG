@@ -51,7 +51,16 @@ Contiene la documentación asociada al TFG:
 # Clonar el repositorio
 git https://github.com/AntonioPerez00/TFG
 
+<<<<<<< HEAD
 # Levantar el backend y frontend (si tienes Docker)
 docker-compose up --build
 
+=======
+# Levantar el backend (con Docker)
+docker-compose up --build
+
+# Levantar el frontend
+npm run dev
+
+>>>>>>> 97c48a087f0e1dc600f2eddad6c55c67adbab51e
 # Puede que de errores por necesitar instalar muchas dependencias en tu máquina local
